@@ -10,8 +10,10 @@ void IdleReader::setup() const {
     }
 }
 
-auto IdleReader::read() -> const FieldsArray& {
+void IdleReader::read() {
     const auto commonInPinsCount = commonInPins.size();
+
+    int counter = 0;
 
     for (int i = 0; i < commonInPinsCount; i++) {
         for (uint8_t j = 0; j < analogPinsPerChip; j++) {
@@ -19,16 +21,16 @@ auto IdleReader::read() -> const FieldsArray& {
                 digitalWrite(pair.first, j & pair.second);
             }
 
-            const int cellId = i * commonInPinsCount + j;
-            if (cellId < fieldsCount) {
-                rawFields[cellId] = analogRead(commonInPins[i]);
+            if (counter < fieldsCount) {
+                rawFields[counter] = analogRead(commonInPins[i]);
+            } else {
+                return;
             }
+            counter++;
         }
     }
-
-    return rawFields;
 }
 
-auto IdleReader::getRawArray() const -> const FieldsArray& {
+const FieldsRaw& IdleReader::getRawFields() const {
     return rawFields;
 }
