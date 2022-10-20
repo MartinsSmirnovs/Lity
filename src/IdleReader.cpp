@@ -1,3 +1,5 @@
+#ifdef BUILD_ESP32
+
 #include "IdleReader.h"
 
 void IdleReader::setup() const {
@@ -34,3 +36,5 @@ void IdleReader::read() {
 const FieldsRaw& IdleReader::getRawFields() const {
     return rawFields;
 }
+
+#endif

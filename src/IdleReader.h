@@ -1,4 +1,5 @@
 #pragma once
+#ifdef BUILD_ESP32
 
 #include "LityConfig.h"
 #include <Arduino.h>
@@ -22,3 +23,5 @@ private:
     // How many pins per each analog demultiplexer chip
     constexpr static int analogPinsPerChip = 8;
 };
+
+#endif
