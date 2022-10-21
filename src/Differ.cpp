@@ -1,7 +1,7 @@
 #include "Differ.h"
 #include <algorithm>
 
-bool Differ::diff(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) {
+bool Differ::equal(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) {
     return std::equal(fieldsLeft.begin(), fieldsLeft.end(), fieldsRight.begin());
 }
 

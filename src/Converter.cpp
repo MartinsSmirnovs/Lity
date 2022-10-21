@@ -1,7 +1,7 @@
 #include "Converter.h"
+#include "LityConfig.h"
 
-Fields Converter::toFields(const FieldsRaw& rawFields) {
-    Fields fields;
+void Converter::toFields(const FieldsRaw& rawFields, Fields& fields) {
     fields[0][0] = rawFields[0];
     fields[0][1] = rawFields[5];
     fields[0][2] = rawFields[10];
@@ -31,8 +31,10 @@ Fields Converter::toFields(const FieldsRaw& rawFields) {
     fields[4][2] = rawFields[15];
     fields[4][3] = rawFields[18];
     fields[4][4] = rawFields[24];
+}
 
-    return fields;
+int Converter::toId(const Coord& coord, int rows) {
+    return coord.y * rows + coord.x;
 }
 
 int Converter::toStripId(int id) {

@@ -1,3 +1,5 @@
+#ifdef BUILD_TESTS
+
 #include "Tests.h"
 #include <unity.h>
 
@@ -13,3 +15,5 @@ int main(int argc, char** argv) {
     RUN_TEST(testDiffer_find);
     UNITY_END();
 }
+
+#endif

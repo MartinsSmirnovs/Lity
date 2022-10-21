@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Coord.h"
 #include "LityConfig.h"
 
-class Converter
-{
+class Converter {
 public:
-    static Fields toFields( const FieldsRaw& rawFields );
+    static void toFields(const FieldsRaw& rawFields, Fields& fields);
     static int toStripId(int id);
+    static int toId(const Coord& coord, int rows);
 };
