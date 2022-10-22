@@ -20,6 +20,8 @@ private:
     Fields fieldsPrevious;
 
     int toId(const Coord& coord) const;
+
+    void updatePreviousFields();
 };
 
 #endif

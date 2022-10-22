@@ -3,6 +3,7 @@
 #include "LityManager.h"
 #include "Converter.h"
 #include "Differ.h"
+#include "Field.h"
 #include "IdleReader.h"
 
 void LityManager::setup() {
@@ -23,15 +24,26 @@ void LityManager::run() {
     }
 
     Converter::toFields(rawFields, fields);
-
     const auto coord = Differ::find(fieldsPrevious, fields);
 
-    const RGB rgb = { 255, 0, 0 };
+    Field field;
+    try {
+        field = Field(fields[coord.y][coord.x]);
+    } catch (const std::exception& exception) {
+        updatePreviousFields();
+        return;
+    }
+
+    const RGB rgb = field.getColor();
 
     const int coordId = toId(coord);
     const int stripId = Converter::toStripId(coordId);
     pixelDriver.setColor(stripId, rgb);
 
+    updatePreviousFields();
+}
+
+void LityManager::updatePreviousFields() {
     rawFieldsPrevious = rawFields;
     fieldsPrevious    = fields;
 }
