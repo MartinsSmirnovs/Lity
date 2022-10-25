@@ -1,16 +1,16 @@
 #ifdef BUILD_TESTS
 
-#include "Coord.h"
+#include "Point.h"
 #include <unity.h>
 
-void testCoord_isEmpty() {
-    Coord coord;
+void testPoint_isEmpty() {
+    Point point;
 
-    TEST_ASSERT_TRUE(coord.isEmpty());
+    TEST_ASSERT_TRUE(point.isEmpty());
 
-    coord.x = 10;
+    point.x = 10;
 
-    TEST_ASSERT_FALSE(coord.isEmpty());
+    TEST_ASSERT_FALSE(point.isEmpty());
 }
 
 #endif

@@ -10,26 +10,26 @@ void setup() {
 
 // void rainbow(int);
 
-void display(const Fields& v) {
-    int counter = 0;
-    for (const auto& i : v) {
-        for (const auto& j : i) {
-            if (counter < 10) {
-                Serial.print(" ");
-            }
-            Serial.print(counter);
-            Serial.print(".");
-            Serial.print(j);
-            Serial.print(" ");
-            counter++;
-        }
-        Serial.println();
-    }
+// void display(const Fields& v) {
+//     int counter = 0;
+//     for (const auto& i : v) {
+//         for (const auto& j : i) {
+//             if (counter < 10) {
+//                 Serial.print(" ");
+//             }
+//             Serial.print(counter);
+//             Serial.print(".");
+//             Serial.print(j);
+//             Serial.print(" ");
+//             counter++;
+//         }
+//         Serial.println();
+//     }
 
-    Serial.println();
-    Serial.println();
-    Serial.println();
-}
+//     Serial.println();
+//     Serial.println();
+//     Serial.println();
+// }
 
 void loop() {
     manager.run();

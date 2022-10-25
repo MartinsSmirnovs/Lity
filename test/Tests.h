@@ -2,7 +2,7 @@
 
 void testDiffer_diff();
 void testDiffer_find();
-void testCoord_isEmpty();
+void testPoint_isEmpty();
 void testConverter_toId();
 void testField_constructor();
 

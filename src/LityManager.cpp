@@ -3,16 +3,25 @@
 #include "LityManager.h"
 #include "Converter.h"
 #include "Differ.h"
-#include "Field.h"
 #include "IdleReader.h"
 
 void LityManager::setup() {
     pixelDriver.setup();
     IdleReader::setup();
 
-    // Initial reading and converting which is required for first time diff search
-    IdleReader::read(rawFieldsPrevious);
-    Converter::toFields(rawFieldsPrevious, fieldsPrevious);
+    bool unfilled = true;
+    do {
+        // Initial reading and converting which is required for first time diff search
+        IdleReader::read(rawFieldsPrevious);
+
+        try {
+            logic.populateFields(rawFieldsPrevious);
+            unfilled = false;
+        } catch (std::exception& exception) {
+            Serial.println(exception.what());
+        }
+
+    } while (unfilled);
 }
 
 void LityManager::run() {
@@ -23,33 +32,32 @@ void LityManager::run() {
         return;
     }
 
-    Converter::toFields(rawFields, fields);
-    const auto coord = Differ::find(fieldsPrevious, fields);
-
-    Field field;
     try {
-        field = Field(fields[coord.y][coord.x]);
-    } catch (const std::exception& exception) {
-        updatePreviousFields();
-        return;
+        const auto& resultList = logic.process(rawFieldsPrevious, rawFields);
+
+        for (const auto& result : resultList) {
+            displayField(result.first, result.second);
+        }
+    } catch (std::exception& exception) {
+        Serial.println(exception.what());
     }
-
-    const RGB rgb = field.getColor();
-
-    const int coordId = toId(coord);
-    const int stripId = Converter::toStripId(coordId);
-    pixelDriver.setColor(stripId, rgb);
 
     updatePreviousFields();
 }
 
-void LityManager::updatePreviousFields() {
-    rawFieldsPrevious = rawFields;
-    fieldsPrevious    = fields;
+void LityManager::displayField(const Field& field, const Point& point) {
+    const auto& rgb   = field.getColor();
+    const int pointId = toId(point);
+    const int stripId = Converter::toStripId(pointId);
+    pixelDriver.setColor(stripId, rgb);
 }
 
-int LityManager::toId(const Coord& coord) const {
-    return Converter::toId(coord, sideSize);
+void LityManager::updatePreviousFields() {
+    rawFieldsPrevious = rawFields;
+}
+
+int LityManager::toId(const Point& point) const {
+    return Converter::toId(point, sideSize);
 }
 
 #endif
