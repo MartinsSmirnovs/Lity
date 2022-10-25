@@ -15,24 +15,4 @@ void testDiffer_diff() {
     TEST_ASSERT_FALSE(Differ::equal(fieldsLeft, fieldsRight));
 }
 
-void testDiffer_find() {
-    // Fields fieldsLeft;
-    // fieldsLeft.fill({ 1, 1, 1, 1, 1 });
-
-    // Fields fieldsRight = fieldsLeft;
-
-    // {
-    //     const auto point = Differ::find(fieldsLeft, fieldsRight);
-    //     TEST_ASSERT_TRUE(point.isEmpty());
-    // }
-
-    // fieldsRight[2][3] = 0;
-
-    // {
-    //     const auto point = Differ::find(fieldsLeft, fieldsRight);
-    //     TEST_ASSERT_EQUAL_INT(point.y, 2);
-    //     TEST_ASSERT_EQUAL_INT(point.x, 3);
-    // }
-}
-
 #endif
