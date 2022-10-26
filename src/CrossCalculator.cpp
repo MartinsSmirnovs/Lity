@@ -56,16 +56,38 @@ void CrossCalculator::upgrade(PointList& crossMiddleList, Fields& fields) {
         return;
     }
 
+    PointList resultList;
+
     for (int i = 0; i < crossMiddleList.size(); i++) {
         const auto& point = crossMiddleList[i];
 
+        bool isAdjacent = false;
+        for (int j = 0; j < crossMiddleList.size(); j++) {
+            if (j == i) {
+                continue;
+            }
+
+            const auto testPoint = point - crossMiddleList[j];
+
+            // If two fields are adjacent
+            if (abs(testPoint.y) + abs(testPoint.x) == 1) {
+                isAdjacent = true;
+                break;
+            }
+        }
+
+        if (isAdjacent) {
+            continue;
+        }
+
         const bool upgraded = fields[point.y][point.x].upgrade();
 
-        if (!upgraded) {
-            crossMiddleList.erase(crossMiddleList.begin() + i);
-            i--;
+        if (upgraded) {
+            resultList.push_back(crossMiddleList[i]);
         }
     }
+
+    crossMiddleList = resultList;
 }
 
 void CrossCalculator::pay(const PointList& crossMiddleList, Fields& fields, FieldPointList& modifiedFields) {

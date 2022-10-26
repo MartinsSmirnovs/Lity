@@ -200,6 +200,68 @@ void testCrossCalculator_find() {
 }
 
 void testCrossCalculator_upgrade() {
+    // Empty fields
+    {
+        Fields fields;
+        CrossCalculator::PointList pointList;
+
+        CrossCalculator::upgrade(pointList, fields);
+
+        TEST_ASSERT_TRUE(pointList.empty());
+    }
+
+    // One upgradable field
+    {
+        Fields fields;
+        fields[2][1].setType(Field::blue);
+
+        CrossCalculator::PointList pointList = { { 2, 1 } };
+
+        CrossCalculator::upgrade(pointList, fields);
+
+        TEST_ASSERT_EQUAL_INT(1, pointList.size());
+
+        TEST_ASSERT_EQUAL_INT(2, pointList[0].y);
+        TEST_ASSERT_EQUAL_INT(1, pointList[0].x);
+
+        TEST_ASSERT_EQUAL_INT(Field::Building::levelFirst, fields[2][1].getBuilding());
+    }
+
+    // Two upgradable fields
+    {
+        Fields fields;
+        fields[2][1].setType(Field::blue);
+        fields[2][3].setType(Field::blue);
+        fields[2][3].upgrade();
+
+        CrossCalculator::PointList pointList = { { 2, 1 }, { 2, 3 } };
+
+        CrossCalculator::upgrade(pointList, fields);
+
+        TEST_ASSERT_EQUAL_INT(2, pointList.size());
+
+        TEST_ASSERT_EQUAL_INT(2, pointList[0].y);
+        TEST_ASSERT_EQUAL_INT(1, pointList[0].x);
+
+        TEST_ASSERT_EQUAL_INT(2, pointList[1].y);
+        TEST_ASSERT_EQUAL_INT(3, pointList[1].x);
+
+        TEST_ASSERT_EQUAL_INT(Field::Building::levelFirst, fields[2][1].getBuilding());
+        TEST_ASSERT_EQUAL_INT(Field::Building::levelSecond, fields[2][3].getBuilding());
+    }
+
+    // Two non-upgradable fields since they are adjacent
+    {
+        Fields fields;
+        fields[2][1].setType(Field::blue);
+        fields[2][2].setType(Field::blue);
+
+        CrossCalculator::PointList pointList = { { 2, 1 }, { 2, 2 } };
+
+        CrossCalculator::upgrade(pointList, fields);
+
+        TEST_ASSERT_TRUE(pointList.empty());
+    }
 }
 
 void testCrossCalculator_pay() {

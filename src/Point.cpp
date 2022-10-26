@@ -17,6 +17,10 @@ Point Point::operator+(const Point& first) const {
     return Point(y + first.y, x + first.x);
 }
 
+Point Point::operator-(const Point& first) const {
+    return Point(y - first.y, x - first.x);
+}
+
 bool Point::operator==(const Point& first) const {
     return y == first.y && x == first.x;
 }

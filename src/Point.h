@@ -14,6 +14,7 @@ public:
     bool hasNegative() const;
 
     Point operator+(const Point& first) const;
+    Point operator-(const Point& first) const;
 
     bool operator==(const Point& first) const;
     bool operator!=(const Point& first) const;
