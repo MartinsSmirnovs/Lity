@@ -13,7 +13,11 @@ auto CrossCalculator::find(const Fields& fields, const Field& field, const Point
     PointList pointList;
 
     for (const auto& searchPoint : searchValues) {
-        std::array<Field::Type, fieldsInCross> cross;
+        std::array<Field::Type, fieldsInCross> cross = { Field::black,
+                                                         Field::black,
+                                                         Field::black,
+                                                         Field::black,
+                                                         Field::black };
 
         for (int i = 0; i < fieldsInCross; i++) {
             const auto resultPoint = point + searchPoint + searchValues[i];
@@ -27,10 +31,18 @@ auto CrossCalculator::find(const Fields& fields, const Field& field, const Point
                 break;
             }
 
+            if (resultPoint.y >= sideSize || resultPoint.x >= sideSize) {
+                break;
+            }
+
             cross[i] = resultField.getType();
         }
 
         if (Differ::areAllElementsSame(cross)) {
+            if (cross[0] == Field::black || cross[0] == Field::white) {
+                continue;
+            }
+
             const auto crossMiddlePoint = point + searchPoint;
             pointList.push_back(crossMiddlePoint);
         }
@@ -56,14 +68,14 @@ void CrossCalculator::upgrade(PointList& crossMiddleList, Fields& fields) {
     }
 }
 
-void CrossCalculator::pay(const PointList& crossMiddleList, Fields& fields, FieldPointList& resultList) {
-    resultList.clear();
+void CrossCalculator::pay(const PointList& crossMiddleList, Fields& fields, FieldPointList& modifiedFields) {
+    modifiedFields.clear();
 
     for (const auto& point : crossMiddleList) {
         for (const auto& offset : searchValues) {
             if (offset == Point(0, 0)) {
                 auto& field = fields[point.y][point.x];
-                resultList.push_back({ field, point });
+                modifiedFields.push_back({ field, point });
                 continue;
             }
 
@@ -72,7 +84,7 @@ void CrossCalculator::pay(const PointList& crossMiddleList, Fields& fields, Fiel
             auto& field = fields[resultPoint.y][resultPoint.x];
             field.setType(Field::black);
 
-            resultList.push_back({ field, resultPoint });
+            modifiedFields.push_back({ field, resultPoint });
         }
     }
 }
