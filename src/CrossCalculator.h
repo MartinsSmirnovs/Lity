@@ -17,21 +17,4 @@ public:
 private:
     constexpr static int fieldsInCross = 5;
     static const std::array<Point, fieldsInCross> searchValues;
-
-    template <class T>
-    static bool areAllElementsSame(const T& container) {
-        if (container.size() == 0) {
-            return true;
-        }
-
-        const auto& first = container[0];
-
-        for (const auto& i : container) {
-            if (i != first) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 };

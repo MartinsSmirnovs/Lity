@@ -84,6 +84,14 @@ auto Field::closest(const TypeList& list, int value) -> TypeList::const_iterator
 }
 
 bool Field::upgrade() {
+    if (type == Type::white) {
+        return false;
+    }
+
+    if (type == Type::black) {
+        return false;
+    }
+
     switch (building) {
         case Building::levelNone:
             building = Building::levelFirst;

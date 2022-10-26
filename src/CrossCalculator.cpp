@@ -1,4 +1,5 @@
 #include "CrossCalculator.h"
+#include "Differ.h"
 
 const std::array<Point, CrossCalculator::fieldsInCross> CrossCalculator::searchValues = {
     Point(0, 0),  // middle
@@ -29,7 +30,7 @@ auto CrossCalculator::find(const Fields& fields, const Field& field, const Point
             cross[i] = resultField.getType();
         }
 
-        if (areAllElementsSame(cross)) {
+        if (Differ::areAllElementsSame(cross)) {
             const auto crossMiddlePoint = point + searchPoint;
             pointList.push_back(crossMiddlePoint);
         }

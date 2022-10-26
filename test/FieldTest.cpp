@@ -68,4 +68,83 @@ void testField_constructor() {
     }
 }
 
+void testField_getColor() {
+    static_assert(Field::red == 1540);
+
+    const Field field(1400);
+
+    const auto rgb = field.getColor();
+
+    TEST_ASSERT_EQUAL_INT(255, rgb.red);
+    TEST_ASSERT_EQUAL_INT(0, rgb.green);
+    TEST_ASSERT_EQUAL_INT(0, rgb.blue);
+}
+
+void testField_upgrade() {
+    static_assert(Field::purple == 3276);
+
+    {
+        Field field;
+        const auto result = field.upgrade();
+        TEST_ASSERT_FALSE(result);
+        TEST_ASSERT_EQUAL(Field::black, field.getType());
+        TEST_ASSERT_EQUAL(Field::Building::levelNone, field.getBuilding());
+    }
+
+    {
+        // Full upgrade cycle
+
+        Field field(3276);
+
+        {
+            const auto result = field.upgrade();
+            TEST_ASSERT_TRUE(result);
+            TEST_ASSERT_EQUAL(Field::purple, field.getType());
+            TEST_ASSERT_EQUAL(Field::Building::levelFirst, field.getBuilding());
+        }
+        {
+            const auto result = field.upgrade();
+            TEST_ASSERT_TRUE(result);
+            TEST_ASSERT_EQUAL(Field::purple, field.getType());
+            TEST_ASSERT_EQUAL(Field::Building::levelSecond, field.getBuilding());
+        }
+
+        {
+            const auto result = field.upgrade();
+            TEST_ASSERT_TRUE(result);
+            TEST_ASSERT_EQUAL(Field::purple, field.getType());
+            TEST_ASSERT_EQUAL(Field::Building::levelThird, field.getBuilding());
+        }
+
+        {
+            const auto result = field.upgrade();
+            TEST_ASSERT_FALSE(result);
+            TEST_ASSERT_EQUAL(Field::purple, field.getType());
+            TEST_ASSERT_EQUAL(Field::Building::levelThird, field.getBuilding());
+        }
+    }
+}
+
+void testField_operatorEquals() {
+    {
+        const Field fieldLeft(Field::blue);
+        const Field fieldRight(Field::blue);
+
+        TEST_ASSERT_TRUE(fieldLeft == fieldRight);
+
+        const Field fieldAnother(Field::red);
+
+        TEST_ASSERT_FALSE(fieldLeft == fieldAnother);
+    }
+
+    {
+        const Field fieldLeft(Field::blue);
+        Field fieldRight(Field::blue);
+
+        fieldRight.upgrade();
+
+        TEST_ASSERT_FALSE(fieldLeft == fieldRight);
+    }
+}
+
 #endif
