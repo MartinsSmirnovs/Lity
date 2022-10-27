@@ -4,8 +4,8 @@
 LityManager manager;
 
 void setup() {
-    manager.setup();
     Serial.begin(115200);
+    manager.setup();
 }
 
 // void rainbow(int);

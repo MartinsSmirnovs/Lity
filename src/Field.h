@@ -12,7 +12,7 @@ public:
         red    = 1540,
         green  = 2457,
         purple = 3276,
-        black  = 4076
+        black  = 4095
     };
 
     enum class Building {
