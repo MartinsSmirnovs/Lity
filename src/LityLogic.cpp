@@ -14,6 +14,12 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
     const auto point = Converter::toFieldId(valueFieldPair.first);
     const auto field = valueFieldPair.second;
 
+    // This is reading from pulled up pin. Skip
+    if (field.isNone()) {
+        resultList.clear();
+        return resultList;
+    }
+
     // Store resulting field in fields list
     fields[point.y][point.x] = field;
 
@@ -26,8 +32,15 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
     // Pay for upgrades by darkening fields around middle point of cross
     CrossCalculator::pay(crossMiddleList, fields, resultList);
 
-    // Make sure that at least currently inputted field gets displayed
-    resultList.push_back({ field, point });
+    return finalResult(field, point);
+}
+
+auto LityLogic::finalResult(const Field& field, const Point& point) -> const FieldPointList& {
+    // Make sure that currently inputted field gets displayed if
+    // there were no crosses
+    if (resultList.empty()) {
+        resultList.push_back({ field, point });
+    }
 
     return resultList;
 }

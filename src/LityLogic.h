@@ -17,4 +17,6 @@ private:
     FieldPointList resultList;
 
     std::pair<int, Field> makeField(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) const;
+
+    const FieldPointList& finalResult(const Field& field, const Point& point);
 };

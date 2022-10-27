@@ -265,6 +265,44 @@ void testCrossCalculator_upgrade() {
 }
 
 void testCrossCalculator_pay() {
+    // Pay for two crosses
+    {
+        Fields fields;
+        const Field field(Field::red);
+
+        fields[2][1] = field; // middle
+        fields[3][1] = field; // bottom
+        fields[1][1] = field; // top
+        fields[2][2] = field; // right
+        fields[2][0] = field; // left
+
+        fields[2][3] = field; // middle
+        fields[3][3] = field; // bottom
+        fields[1][3] = field; // top
+        fields[2][4] = field; // right
+        fields[2][2] = field; // left
+
+        const CrossCalculator::PointList crossMiddleList = { { 2, 1 },
+                                                             { 2, 3 } };
+
+        CrossCalculator::FieldPointList modifiedFields;
+
+        CrossCalculator::pay(crossMiddleList, fields, modifiedFields);
+
+        TEST_ASSERT_EQUAL_INT(10, modifiedFields.size());
+
+        TEST_ASSERT_EQUAL_INT(Field::red, fields[2][1].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[3][1].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[1][1].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][2].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][0].getType());
+
+        TEST_ASSERT_EQUAL_INT(Field::red, fields[2][3].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[3][3].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[1][3].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][4].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][2].getType());
+    }
 }
 
 #endif

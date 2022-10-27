@@ -12,7 +12,8 @@ public:
         red    = 1540,
         green  = 2457,
         purple = 3276,
-        black  = 4095
+        black  = 4076,
+        none   = 4095
     };
 
     enum class Building {
@@ -35,6 +36,8 @@ public:
     bool upgrade();
 
     bool operator==(const Field& first) const;
+
+    bool isNone() const;
 
 private:
     Type type         = black;

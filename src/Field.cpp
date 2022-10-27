@@ -7,7 +7,8 @@ const std::vector<Field::Type> Field::typeList = {
     red,
     green,
     purple,
-    black
+    black,
+    none
 };
 
 const std::map<Field::Type, RGB> Field::typeColorMap = {
@@ -109,4 +110,11 @@ bool Field::upgrade() {
 
 bool Field::operator==(const Field& first) const {
     return type == first.type && building == first.building;
+}
+
+bool Field::isNone() const {
+    if (type == none) {
+        return true;
+    }
+    return false;
 }
