@@ -5,6 +5,10 @@
 #include "Differ.h"
 #include "IdleReader.h"
 
+LityManager::LityManager()
+: waiter(debounceInterval) {
+}
+
 void LityManager::setup() {
     pixelDriver.setup();
     IdleReader::setup();
@@ -29,6 +33,10 @@ void LityManager::run() {
 
     // Return if there is no diff between readings
     if (Differ::equal(rawFieldsPrevious, rawFields)) {
+        return;
+    }
+
+    if (!waiter.isReady(millis())) {
         return;
     }
 

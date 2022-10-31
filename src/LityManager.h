@@ -4,15 +4,21 @@
 #include "LityConfig.h"
 #include "LityLogic.h"
 #include "PixelDriver.h"
+#include "Waiter.h"
 
 class LityManager {
 public:
+    LityManager();
+
     void setup();
     void run();
 
 private:
     PixelDriver pixelDriver;
     LityLogic logic;
+
+    Waiter waiter;
+    constexpr static int debounceInterval = 400;
 
     FieldsRaw rawFields;
     FieldsRaw rawFieldsPrevious;
