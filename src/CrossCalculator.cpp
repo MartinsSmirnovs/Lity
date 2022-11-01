@@ -22,17 +22,28 @@ auto CrossCalculator::find(const Fields& fields, const Field& field, const Point
         for (int i = 0; i < fieldsInCross; i++) {
             const auto resultPoint = point + searchPoint + searchValues[i];
 
+            // If resulting point is out of the field (too small)
             if (resultPoint.hasNegative()) {
                 break;
             }
 
+            // If resulting point is out of the field (too big)
+            if (resultPoint.y >= sideSize || resultPoint.x >= sideSize) {
+                break;
+            }
+
             const auto& resultField = fields[resultPoint.y][resultPoint.x];
+
+            // If resulting point is of different color
             if (resultField.getType() != field.getType()) {
                 break;
             }
 
-            if (resultPoint.y >= sideSize || resultPoint.x >= sideSize) {
-                break;
+            // If resulting point (which is not in the middle) is building
+            if (!(searchValues[i].x == 0 && searchValues[i].y == 0)) {
+                if (resultField.getBuilding() != Field::Building::levelNone) {
+                    break;
+                }
             }
 
             cross[i] = resultField.getType();
@@ -52,6 +63,7 @@ auto CrossCalculator::find(const Fields& fields, const Field& field, const Point
 }
 
 void CrossCalculator::upgrade(PointList& crossMiddleList, Fields& fields) {
+    // If there are no crosses, return
     if (crossMiddleList.empty()) {
         return;
     }
