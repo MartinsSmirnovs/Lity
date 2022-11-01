@@ -197,6 +197,24 @@ void testCrossCalculator_find() {
         TEST_ASSERT_EQUAL_INT(2, secondPoint.y);
         TEST_ASSERT_EQUAL_INT(1, secondPoint.x);
     }
+
+    // Cross cannot be made because one of the fields (which is not in the middle) is actually a building
+    {
+        Fields fields;
+        const Field field(Field::red);
+        const Point point(2, 2);
+
+        fields[2][1] = field; // middle
+        fields[3][1] = field; // bottom
+        fields[1][1] = field; // top
+        fields[2][2] = field; // right
+        fields[2][0] = field; // left
+
+        fields[2][0].upgrade();
+
+        const auto pointList = CrossCalculator::find(fields, field, point);
+        TEST_ASSERT_EQUAL_INT(0, pointList.size());
+    }
 }
 
 void testCrossCalculator_upgrade() {
