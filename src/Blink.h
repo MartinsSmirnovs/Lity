@@ -11,4 +11,11 @@ public:
 
 private:
     Waiter waiter;
+
+    constexpr static int timesToBlink = 5;
+    static_assert(timesToBlink % 2 != 0);
+
+    int blinkCounter = 0;
+
+    const RGB colorHigh; // and colorTarget is colorLow
 };

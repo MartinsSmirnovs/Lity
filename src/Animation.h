@@ -8,7 +8,7 @@ public:
     // Value of Type is it's animation interval
     enum Type {
         appearance = 10, // fade
-        payment    = 500 // blink
+        payment    = 300 // blink
     };
 
     Animation(const RGB& colorCurrent, const RGB& colorTarget, const Point& point);

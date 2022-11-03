@@ -19,5 +19,6 @@ void testPoint_operatorPlus();
 void testPoint_OperatorEquals();
 void testPoint_ConstructorEqualsNot();
 void testFade_Update();
+void testBlink_Update();
 
 #endif
