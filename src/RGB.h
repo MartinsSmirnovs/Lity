@@ -18,4 +18,6 @@ struct RGB {
     bool operator==(const RGB& first) const {
         return red == first.red && green == first.green && blue == first.blue;
     }
+
+    constexpr static int colorsInPixel = 3;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Animation.h"
+#include "Field.h"
 #include <memory>
 
 class AnimationFactory {

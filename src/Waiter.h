@@ -4,7 +4,7 @@ class Waiter {
 public:
     Waiter(int interval);
 
-    bool isReady(int currentTime);
+    bool isReady(unsigned long currentTime);
 
 private:
     unsigned long previousTime = 0;

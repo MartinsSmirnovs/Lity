@@ -1,6 +1,5 @@
 #pragma once
 
-#include "LityConfig.h"
 #include "Point.h"
 #include "RGB.h"
 
@@ -15,7 +14,7 @@ public:
     Animation(const RGB& colorCurrent, const RGB& colorTarget, const Point& point);
 
     // Returns true if target value is not reached yet, false otherwise
-    virtual bool update(int currentTime) = 0;
+    virtual bool update(unsigned long currentTime) = 0;
 
     const Point& getPoint() const;
     const RGB& getColor() const;

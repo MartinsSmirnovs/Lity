@@ -5,6 +5,6 @@ Blink::Blink(const RGB& colorCurrent, const RGB& colorTarget, const Point& point
   waiter(Animation::payment) {
 }
 
-bool Blink::update(int currentTime) {
+bool Blink::update(unsigned long currentTime) {
     return true;
 }
