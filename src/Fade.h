@@ -12,8 +12,6 @@ public:
     bool update(unsigned long currentTime) override;
 
 private:
-    Waiter waiter;
-
     bool firstTime = true;
 
     unsigned long previousTime = 0;
@@ -25,7 +23,7 @@ private:
         up,
         stop
     };
-    bool direction = false;
+    Direction direction = stop;
 
 
     using ColorDirectionPair = std::pair<uint8_t&, Direction>;

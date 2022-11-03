@@ -3,8 +3,7 @@
 #include <limits>
 
 Fade::Fade(const RGB& colorCurrent, const RGB& colorTarget, const Point& point)
-: Animation(colorCurrent, colorTarget, point),
-  waiter(Animation::appearance) {
+: Animation(colorCurrent, colorTarget, point) {
 }
 
 bool Fade::update(unsigned long currentTime) {
@@ -48,6 +47,8 @@ bool Fade::update(unsigned long currentTime) {
     }
 
     previousTime = currentTime;
+
+    return true;
 }
 
 void Fade::setup() {
