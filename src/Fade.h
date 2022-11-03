@@ -9,22 +9,25 @@ class Fade : public Animation {
 public:
     Fade(const RGB& colorCurrent, const RGB& colorTarget, const Point& point);
 
-    bool update(unsigned long currentTime) override;
+    bool update(unsigned long timeCurrent) override;
 
 private:
-    bool firstTime = true;
-
-    unsigned long previousTime = 0;
-
-    void setup();
-
     enum Direction {
         down = 0,
         up,
         stop
     };
+
+    void setup();
+    uint8_t calculate(int time, Direction direction) const;
+
+    bool firstTime = true;
+
+    unsigned long timeInitial = 0;
+
     Direction direction = stop;
 
+    Waiter waiter;
 
     using ColorDirectionPair = std::pair<uint8_t&, Direction>;
     std::array<ColorDirectionPair, RGB::colorsInPixel> colorDirectionList{ ColorDirectionPair{ colorCurrent.red, stop },
@@ -34,6 +37,4 @@ private:
     const std::array<uint8_t, RGB::colorsInPixel> colorTargetList{ colorTarget.red,
                                                                    colorTarget.green,
                                                                    colorTarget.blue };
-
-    uint8_t calculate(int time, Direction direction) const;
 };

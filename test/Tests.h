@@ -1,7 +1,5 @@
 #ifdef BUILD_TESTS
 
-
-
 void testDiffer_equal();
 void testDiffer_diff();
 void testDiffer_areAllElementsSame();
@@ -20,5 +18,6 @@ void testPoint_hasNegative();
 void testPoint_operatorPlus();
 void testPoint_OperatorEquals();
 void testPoint_ConstructorEqualsNot();
+void testFade_Update();
 
 #endif
