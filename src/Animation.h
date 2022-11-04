@@ -7,7 +7,7 @@ class Animation {
 public:
     // Value of Type is it's animation interval
     enum Type {
-        appearance = 10, // fade
+        appearance = 250, // fade
         payment    = 300 // blink
     };
 

@@ -36,6 +36,7 @@ void LityManager::run() {
         return;
     }
 
+    // Debouncing
     if (!waiter.isReady(millis())) {
         return;
     }
@@ -59,7 +60,6 @@ void LityManager::doAnimations(LityLogic::AnimationList& animationList) {
             const bool updated = animation->update(millis());
 
             if (!updated) {
-                // erase element i from vector
                 animationList.erase(animationList.begin() + i);
                 i--;
                 continue;

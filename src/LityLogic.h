@@ -9,9 +9,6 @@ class LityLogic {
     using FieldPointList = CrossCalculator::FieldPointList;
     using PointList      = CrossCalculator::PointList;
 
-    using OldNewFieldPoint     = std::pair<CrossCalculator::FieldPoint, CrossCalculator::FieldPoint>;
-    using OldNewFieldPointList = std::vector<OldNewFieldPoint>;
-
     using IAnimation = std::shared_ptr<Animation>;
 
 public:
@@ -23,13 +20,11 @@ public:
 private:
     Fields fields;
 
-    FieldPointList resultList;
-
     std::pair<int, Field> makeField(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) const;
 
-    void contemplateAnimations(const Field& left, const Field& right, const Point& point, AnimationList& list);
+    void createAppearingAnimation(const Field& left, const Field& right, const Point& point, AnimationList& list) const;
 
-    AnimationList createPaymentAnimations(const FieldPointList& left, const FieldPointList& right) const;
+    void createPaymentAnimations(const FieldPointList& left, const FieldPointList& right, AnimationList& list) const;
 
     void applyPayment(const FieldPointList& price);
 

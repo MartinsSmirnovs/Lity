@@ -76,7 +76,7 @@ uint8_t Fade::calculate(int time, Direction direction) const {
 
     constexpr auto pi = M_PI;
 
-    constexpr float range = Animation::appearance * 25;
+    constexpr float range = Animation::appearance;
 
     const uint8_t result = yOffset + amplitude * std::cos(pi / range * time + pi * direction);
 

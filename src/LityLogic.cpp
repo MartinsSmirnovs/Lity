@@ -17,7 +17,6 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
 
     // This is reading from pulled up pin. Skip
     if (field.isNone()) {
-        resultList.clear();
         return AnimationList();
     }
 
@@ -33,16 +32,15 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
 
     // Get price to pay for upgrade
     const auto price = CrossCalculator::price(crossMiddleList, fields);
-
+    // Funds are current fields before they become spend (black)
     const auto funds = calculateFunds(price);
-
 
     // Pay for upgrades by darkening fields around middle point of cross
     applyPayment(price);
 
-    AnimationList animations = createPaymentAnimations(funds, price);
-
-    contemplateAnimations(fieldPrevious, field, point, animations);
+    AnimationList animations;
+    createPaymentAnimations(funds, price, animations);
+    createAppearingAnimation(fieldPrevious, field, point, animations);
 
     return animations;
 }
@@ -68,39 +66,32 @@ void LityLogic::applyPayment(const FieldPointList& price) {
     }
 }
 
-auto LityLogic::createPaymentAnimations(const FieldPointList& left, const FieldPointList& right) const -> AnimationList {
-    // Return empty list if something went horribly wrong
+void LityLogic::createPaymentAnimations(const FieldPointList& left, const FieldPointList& right, AnimationList& list) const {
+    // There should be equal amount of different fields. If it is not, something went wrong
     if (left.size() != right.size()) {
-        return AnimationList();
+        return;
     }
-
-    AnimationList list;
 
     for (int i = 0; i < left.size(); i++) {
         const auto& leftField  = left[i].first;
         const auto& rightField = right[i].first;
         const auto& point      = right[i].second;
 
-        list.push_back(AnimationFactory::Create(leftField,
-                                                rightField,
-                                                point,
-                                                Animation::payment));
+        list.push_back(AnimationFactory::Create(leftField, rightField, point, Animation::payment));
     }
-
-    return list;
 }
 
-void LityLogic::contemplateAnimations(const Field& left, const Field& right, const Point& point, AnimationList& list) {
+void LityLogic::createAppearingAnimation(const Field& left, const Field& right, const Point& point, AnimationList& list) const {
     // Make sure that currently inputted field gets displayed if
     // there were no crosses
     if (list.empty()) {
-        list.push_back(AnimationFactory::Create(left,
-                                                right,
-                                                point,
-                                                Animation::appearance));
+        list.push_back(AnimationFactory::Create(left, right, point, Animation::appearance));
         return;
     }
 
+    // If field has to appear in the middle of cross it should appear with appearance
+    // Note that fields that create cross by finishing it on side, are marked as payment
+    // fields
     int counter = 0;
     for (const auto& animation : list) {
         if (animation->getPoint() != point) {
@@ -109,10 +100,7 @@ void LityLogic::contemplateAnimations(const Field& left, const Field& right, con
     }
 
     if (counter == list.size()) {
-        list.push_back(AnimationFactory::Create(left,
-                                                right,
-                                                point,
-                                                Animation::appearance));
+        list.push_back(AnimationFactory::Create(left, right, point, Animation::appearance));
     }
 }
 

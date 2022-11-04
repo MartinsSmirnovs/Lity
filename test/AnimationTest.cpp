@@ -5,35 +5,38 @@
 #include <unity.h>
 
 void testFade_Update() {
-    static_assert(Animation::appearance == 10);
+    static_assert(Animation::appearance == 250);
 
+    // Fade goes down
     const RGB red(255, 0, 0);
     const RGB black;
 
     Fade fade(red, black, Point());
 
-    // Performs setup
-    TEST_ASSERT_TRUE(fade.update(100));
+    constexpr int timePointOfReference = 100;
 
-    fade.update(100 + Animation::appearance * 10);
-    fade.update(100 + Animation::appearance * 15);
+    // Performs setup
+    TEST_ASSERT_TRUE(fade.update(timePointOfReference));
+
+    fade.update(timePointOfReference + 50);
+    fade.update(timePointOfReference + 100);
 
     // Check if the value is still falling
-    TEST_ASSERT_TRUE(fade.update(100 + Animation::appearance * 20));
+    TEST_ASSERT_TRUE(fade.update(timePointOfReference + 200));
 
     {
         const auto& color = fade.getColor();
 
-        TEST_ASSERT_EQUAL_INT(166, color.red);
+        TEST_ASSERT_EQUAL_INT(24, color.red);
         TEST_ASSERT_EQUAL_INT(0, color.green);
         TEST_ASSERT_EQUAL_INT(0, color.blue);
     }
 
     // Fade should drop to it's lowest value here
-    TEST_ASSERT_TRUE(fade.update(100 + 510));
+    TEST_ASSERT_TRUE(fade.update(timePointOfReference + Animation::appearance));
 
     // Fade should stop dropping after getting to it's lowest value
-    TEST_ASSERT_FALSE(fade.update(100 + 530));
+    TEST_ASSERT_FALSE(fade.update(timePointOfReference + Animation::appearance + 30));
 
     {
         const auto& color = fade.getColor();
