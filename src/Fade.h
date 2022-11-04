@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Animation.h"
-#include "Waiter.h"
 #include <array>
 #include <utility>
 
@@ -27,14 +26,17 @@ private:
 
     Direction direction = stop;
 
-    Waiter waiter;
-
     using ColorDirectionPair = std::pair<uint8_t&, Direction>;
     std::array<ColorDirectionPair, RGB::colorsInPixel> colorDirectionList{ ColorDirectionPair{ colorCurrent.red, stop },
                                                                            ColorDirectionPair{ colorCurrent.green, stop },
                                                                            ColorDirectionPair{ colorCurrent.blue, stop } };
 
+    std::array<uint8_t, RGB::colorsInPixel> colorPreviousList{ colorCurrent.red,
+                                                               colorCurrent.green,
+                                                               colorCurrent.blue };
+
     const std::array<uint8_t, RGB::colorsInPixel> colorTargetList{ colorTarget.red,
                                                                    colorTarget.green,
                                                                    colorTarget.blue };
+
 };

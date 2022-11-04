@@ -3,15 +3,13 @@
 #include <limits>
 
 Fade::Fade(const RGB& colorCurrent, const RGB& colorTarget, const Point& point)
-: Animation(colorCurrent, colorTarget, point),
-  waiter(Animation::appearance) {
+: Animation(colorCurrent, colorTarget, point) {
 }
 
 bool Fade::update(unsigned long timeCurrent) {
     // First time setup
     if (firstTime) {
         setup();
-        waiter.isReady(timeCurrent);
 
         timeInitial = timeCurrent;
         firstTime   = false;
@@ -24,27 +22,33 @@ bool Fade::update(unsigned long timeCurrent) {
         return false;
     }
 
-    // Execute only if required timeout has passed
-    if (waiter.isReady(timeCurrent)) {
-        for (auto& pair : colorDirectionList) {
-            auto& color          = pair.first;
-            const auto direction = pair.second;
+    for (int i = 0; i < colorTargetList.size(); i++) {
+        const auto target = colorTargetList[i];
+        auto& color       = colorDirectionList[i].first;
+        auto& direction   = colorDirectionList[i].second;
+        auto& previous    = colorPreviousList[i];
 
-            if (direction == stop) {
-                continue;
-            }
-
-            const auto time   = timeCurrent - timeInitial;
-            const auto result = calculate(time, direction);
-
-            if (direction == down && result > color) {
-                color = std::numeric_limits<uint8_t>::min();
-            } else if (direction == up && result < color) {
-                color = std::numeric_limits<uint8_t>::max();
-            } else {
-                color = result;
-            }
+        if (direction == stop) {
+            continue;
         }
+
+        const auto time   = timeCurrent - timeInitial;
+        const auto result = calculate(time, direction);
+
+        if (direction == down && previous < result) {
+            color     = target;
+            direction = stop;
+            continue;
+        }
+
+        if (direction == up && previous > result) {
+            color     = target;
+            direction = stop;
+            continue;
+        }
+
+        previous = color;
+        color    = result;
     }
 
     return true;
@@ -72,7 +76,7 @@ uint8_t Fade::calculate(int time, Direction direction) const {
 
     constexpr auto pi = M_PI;
 
-    constexpr float range = Animation::appearance * 50;
+    constexpr float range = Animation::appearance * 25;
 
     const uint8_t result = yOffset + amplitude * std::cos(pi / range * time + pi * direction);
 

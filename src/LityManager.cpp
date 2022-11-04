@@ -41,11 +41,9 @@ void LityManager::run() {
     }
 
     try {
-        const auto& resultList = logic.process(rawFieldsPrevious, rawFields);
+        auto animations = logic.process(rawFieldsPrevious, rawFields);
+        doAnimations(animations);
 
-        for (const auto& result : resultList) {
-            displayField(result.first, result.second);
-        }
     } catch (std::exception& exception) {
         Serial.println(exception.what());
     }
@@ -53,11 +51,32 @@ void LityManager::run() {
     updatePreviousFields();
 }
 
-void LityManager::displayField(const Field& field, const Point& point) {
-    const auto& rgb   = field.getColor();
+void LityManager::doAnimations(LityLogic::AnimationList& animationList) {
+    while (animationList.size()) {
+        for (int i = 0; i < animationList.size(); i++) {
+            auto& animation = animationList[i];
+
+            const bool updated = animation->update(millis());
+
+            if (!updated) {
+                // erase element i from vector
+                animationList.erase(animationList.begin() + i);
+                i--;
+                continue;
+            }
+
+            const auto& color = animation->getColor();
+            const auto& point = animation->getPoint();
+
+            displayColor(color, point);
+        }
+    }
+}
+
+void LityManager::displayColor(const RGB& color, const Point& point) {
     const int pointId = toId(point);
     const int stripId = Converter::toStripId(pointId);
-    pixelDriver.setColor(stripId, rgb);
+    pixelDriver.setColor(stripId, color);
 }
 
 void LityManager::updatePreviousFields() {

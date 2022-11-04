@@ -66,6 +66,22 @@ void testField_constructor() {
             TEST_FAIL_MESSAGE(exception.what());
         }
     }
+
+    // Value none should have black color
+    {
+        try {
+            const Field field(Field::none);
+            TEST_ASSERT_EQUAL_INT(Field::none, field.getType());
+
+            const auto rgb = field.getColor();
+            TEST_ASSERT_EQUAL_INT(0, rgb.red);
+            TEST_ASSERT_EQUAL_INT(0, rgb.green);
+            TEST_ASSERT_EQUAL_INT(0, rgb.blue);
+
+        } catch (const std::exception& exception) {
+            TEST_FAIL_MESSAGE(exception.what());
+        }
+    }
 }
 
 void testField_getColor() {

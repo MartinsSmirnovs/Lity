@@ -6,7 +6,8 @@
 class CrossCalculator {
 public:
     using PointList      = std::vector<Point>;
-    using FieldPointList = std::vector<std::pair<Field, Point>>;
+    using FieldPoint     = std::pair<Field, Point>;
+    using FieldPointList = std::vector<FieldPoint>;
 
     // Searches for crosses in fields list around specified field
     // Returns points which represent centers of found crosses
@@ -17,8 +18,8 @@ public:
     static void upgrade(PointList& crossMiddleList, Fields& fields);
 
     // Sets black fields around upgraded middle points of crosses
-    // Writes into modifiedFields to indicate amount of payment
-    static void pay(const PointList& crossMiddleList, Fields& fields, FieldPointList& modifiedFields);
+    // Returns list of fields to modify
+    static FieldPointList price(const PointList& crossMiddleList, const Fields& fields);
 
 private:
     constexpr static int fieldsInCross = 5;

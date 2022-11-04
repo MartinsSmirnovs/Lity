@@ -24,7 +24,9 @@ private:
     FieldsRaw rawFieldsPrevious;
 
     void updatePreviousFields();
-    void displayField(const Field& field, const Point& point);
+    void displayColor(const RGB& color, const Point& point);
+
+    void doAnimations(LityLogic::AnimationList& animationList);
 
     int toId(const Point& point) const;
 };
