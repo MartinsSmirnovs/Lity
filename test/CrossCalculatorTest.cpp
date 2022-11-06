@@ -303,23 +303,20 @@ void testCrossCalculator_pay() {
         const CrossCalculator::PointList crossMiddleList = { { 2, 1 },
                                                              { 2, 3 } };
 
-        CrossCalculator::FieldPointList modifiedFields;
 
-        CrossCalculator::pay(crossMiddleList, fields, modifiedFields);
+        const auto price = CrossCalculator::price(crossMiddleList, fields);
 
-        TEST_ASSERT_EQUAL_INT(10, modifiedFields.size());
+        TEST_ASSERT_EQUAL_INT(8, price.size());
 
-        TEST_ASSERT_EQUAL_INT(Field::red, fields[2][1].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[3][1].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[1][1].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][2].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][0].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[0].first.getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[1].first.getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[2].first.getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[3].first.getType());
 
-        TEST_ASSERT_EQUAL_INT(Field::red, fields[2][3].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[3][3].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[1][3].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][4].getType());
-        TEST_ASSERT_EQUAL_INT(Field::black, fields[2][2].getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[4].first.getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[5].first.getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[6].first.getType());
+        TEST_ASSERT_EQUAL_INT(Field::black, price[7].first.getType());
     }
 }
 

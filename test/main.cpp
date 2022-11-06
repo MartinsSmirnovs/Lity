@@ -29,6 +29,8 @@ int main(int argc, char** argv) {
     RUN_TEST(testPoint_operatorPlus);
     RUN_TEST(testPoint_OperatorEquals);
     RUN_TEST(testPoint_ConstructorEqualsNot);
+    RUN_TEST(testFade_Update);
+    RUN_TEST(testBlink_Update);
     UNITY_END();
 }
 

@@ -13,7 +13,7 @@ const std::vector<Field::Type> Field::typeList = {
 
 const std::map<Field::Type, RGB> Field::typeColorMap = {
     { black, { 0, 0, 0 } },
-    { white, { 50, 50, 50 } },
+    { white, { 255, 255, 255 } },
     { blue, { 0, 0, 255 } },
     { red, { 255, 0, 0 } },
     { green, { 0, 255, 0 } },
@@ -54,6 +54,10 @@ void Field::setType(Type type) {
 }
 
 const RGB& Field::getColor() const {
+    if (type == none) {
+        return typeColorMap.at(black);
+    }
+
     return typeColorMap.at(type);
 }
 

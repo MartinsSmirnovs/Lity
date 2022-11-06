@@ -102,23 +102,23 @@ void CrossCalculator::upgrade(PointList& crossMiddleList, Fields& fields) {
     crossMiddleList = resultList;
 }
 
-void CrossCalculator::pay(const PointList& crossMiddleList, Fields& fields, FieldPointList& modifiedFields) {
-    modifiedFields.clear();
+auto CrossCalculator::price(const PointList& crossMiddleList, const Fields& fields) -> FieldPointList {
+    FieldPointList modifiedFields;
 
     for (const auto& point : crossMiddleList) {
         for (const auto& offset : searchValues) {
             if (offset == Point(0, 0)) {
-                auto& field = fields[point.y][point.x];
-                modifiedFields.push_back({ field, point });
                 continue;
             }
 
             const auto resultPoint = point + offset;
 
-            auto& field = fields[resultPoint.y][resultPoint.x];
+            auto field = fields[resultPoint.y][resultPoint.x];
             field.setType(Field::black);
 
             modifiedFields.push_back({ field, resultPoint });
         }
     }
+
+    return modifiedFields;
 }
