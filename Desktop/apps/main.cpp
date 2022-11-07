@@ -1,9 +1,14 @@
+#include <QApplication>
 #include <lity/logic/LityLogic.h>
-
-LityLogic logic;
+#include <lity/widgets/MainWindow.h>
 
 int main(int argc, char* argv[]) {
-    FieldsRaw left;
-    FieldsRaw right;
-    logic.process(left, right);
+    QApplication app(argc, argv);
+
+    MainWindow w;
+    w.show();
+
+    const int returnCode = app.exec();
+
+    return returnCode;
 }
