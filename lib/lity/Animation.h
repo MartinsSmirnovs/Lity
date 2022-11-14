@@ -18,6 +18,7 @@ public:
 
     const Point& getPoint() const;
     const RGB& getColor() const;
+    const RGB& getTarget() const;
 
 protected:
     const RGB colorTarget;

@@ -3,8 +3,8 @@
 
 #include <QAbstractButton>
 #include <QMainWindow>
-#include <lity/logic/LityConfig.h>
-#include <lity/logic/LityLogic.h>
+#include <lity/LityConfig.h>
+#include <lity/LityLogic.h>
 
 namespace Ui {
 class MainWindow;

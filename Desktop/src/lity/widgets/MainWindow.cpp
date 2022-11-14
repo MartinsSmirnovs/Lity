@@ -1,12 +1,12 @@
 #include "MainWindow.h"
-#include "logic/Converter.h"
-#include "logic/Differ.h"
 #include "ui_MainWindow.h"
 #include <QButtonGroup>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QMetaMethod>
 #include <QObject>
+#include <lity/Converter.h>
+#include <lity/Differ.h>
 
 MainWindow::MainWindow(QWidget* parent)
 : QMainWindow(parent),
