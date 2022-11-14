@@ -35,6 +35,7 @@ private:
     Field::Type currentType = Field::black;
 
     void setColor(QAbstractButton& button, RGB color) const;
+    void setText(QAbstractButton& button, Field::Building building) const;
 
     void clearFields();
 };

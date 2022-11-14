@@ -61,10 +61,13 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::clearFields() {
     for (int i = 0; i < fieldsCount; i++) {
         setColor(*groupFields->button(i), RGB(0, 0, 0));
+        setText(*groupFields->button(i), Field::Building::levelNone);
     }
 
     fieldsPrevious.fill(Field::none);
     fieldsCurrent = fieldsPrevious;
+
+    logic = LityLogic();
 }
 
 void MainWindow::onButtonColorClicked(QAbstractButton* button) {
@@ -100,8 +103,7 @@ Field::Type toFieldType(const RGB& color) {
 }
 
 void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
-    const auto rawId = groupFields->id(button);
-
+    const auto rawId     = groupFields->id(button);
     fieldsCurrent[rawId] = currentType;
 
     // Return if there is no diff between readings
@@ -124,8 +126,24 @@ void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
         const auto& color = animation->getTarget();
 
         setColor(button, color);
+
+        // Update our local fields buffer so it would not get surprises
+        // on next read
         fieldsCurrent[id] = toFieldType(color);
     }
+
+    for (const auto& point : logic.getUpdatedPoints()) {
+        const auto id = Converter::toId(point, sideSize);
+        auto& button  = *groupFields->button(id);
+
+        const auto y = point.y;
+        const auto x = point.x;
+
+        const auto& field = logic.getFields()[y][x];
+        qDebug() << "here";
+        setText(button, field.getBuilding());
+    }
+
     animations.clear();
 
     fieldsPrevious = fieldsCurrent;
@@ -161,6 +179,27 @@ QString toColorName(const RGB& color) {
 
 void MainWindow::setColor(QAbstractButton& button, RGB color) const {
     button.setStyleSheet("background-color:" + toColorName(color));
+}
+
+void MainWindow::setText(QAbstractButton& button, Field::Building building) const {
+    QString buttonText;
+
+    switch (building) {
+        case Field::Building::levelNone: {
+            buttonText = "";
+        } break;
+        case Field::Building::levelFirst: {
+            buttonText = "I";
+        } break;
+        case Field::Building::levelSecond: {
+            buttonText = "II";
+        } break;
+        case Field::Building::levelThird: {
+            buttonText = "III";
+        } break;
+    }
+
+    button.setText(buttonText);
 }
 
 MainWindow::~MainWindow() {

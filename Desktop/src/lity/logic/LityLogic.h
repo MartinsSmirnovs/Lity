@@ -17,6 +17,9 @@ public:
     AnimationList process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight);
     void populateFields(const FieldsRaw& rawFields);
 
+    const Fields& getFields() const;
+    const PointList& getUpdatedPoints() const;
+
 private:
     Fields fields;
 
@@ -29,4 +32,6 @@ private:
     void applyPayment(const FieldPointList& price);
 
     FieldPointList calculateFunds(const FieldPointList& price);
+
+    PointList updatedPoints;
 };

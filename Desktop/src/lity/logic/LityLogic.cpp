@@ -33,15 +33,26 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
 
     // Get price to pay for upgrade
     const auto price = CrossCalculator::price(crossMiddleList, fields);
-    // Funds are current fields before they become spend (black)
-    const auto funds = calculateFunds(price);
-
     // Pay for upgrades by darkening fields around middle point of cross
     applyPayment(price);
 
     AnimationList animations;
+    // Funds are current fields before they become spend (black)
+    const auto funds = calculateFunds(price);
     createPaymentAnimations(funds, price, animations);
     createAppearingAnimation(fieldPrevious, field, point, animations);
+
+
+    updatedPoints.clear();
+    for (const auto& paymentField : price) {
+        updatedPoints.push_back(paymentField.second);
+    }
+    for (const auto& point : crossMiddleList) {
+        updatedPoints.push_back(point);
+    }
+    // Currently changed point
+    updatedPoints.push_back(point);
+
 
     return animations;
 }
@@ -116,4 +127,12 @@ std::pair<int, Field> LityLogic::makeField(const FieldsRaw& fieldsLeft, const Fi
     }
 
     return std::pair<int, Field>(id, Field(value));
+}
+
+const Fields& LityLogic::getFields() const {
+    return fields;
+}
+
+auto LityLogic::getUpdatedPoints() const -> const PointList& {
+    return updatedPoints;
 }
