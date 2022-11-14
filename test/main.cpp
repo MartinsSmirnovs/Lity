@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "Tests.h"
 #include <unity.h>
 
@@ -33,5 +31,3 @@ int main(int argc, char** argv) {
     RUN_TEST(testBlink_Update);
     UNITY_END();
 }
-
-#endif

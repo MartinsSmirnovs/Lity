@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "Point.h"
 #include <unity.h>
 
@@ -74,5 +72,3 @@ void testPoint_ConstructorEqualsNot() {
 
     TEST_ASSERT_TRUE(first != second);
 }
-
-#endif

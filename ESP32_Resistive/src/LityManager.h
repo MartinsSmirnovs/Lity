@@ -1,5 +1,4 @@
 #pragma once
-#ifdef BUILD_ESP32
 
 #include "LityConfig.h"
 #include "LityLogic.h"
@@ -30,5 +29,3 @@ private:
 
     int toId(const Point& point) const;
 };
-
-#endif

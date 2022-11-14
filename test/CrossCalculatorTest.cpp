@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "CrossCalculator.h"
 #include <unity.h>
 
@@ -319,5 +317,3 @@ void testCrossCalculator_pay() {
         TEST_ASSERT_EQUAL_INT(Field::black, price[7].first.getType());
     }
 }
-
-#endif

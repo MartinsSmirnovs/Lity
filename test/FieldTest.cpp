@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "Field.h"
 #include <unity.h>
 
@@ -162,5 +160,3 @@ void testField_operatorEquals() {
         TEST_ASSERT_FALSE(fieldLeft == fieldRight);
     }
 }
-
-#endif

@@ -1,5 +1,3 @@
-#ifdef BUILD_ESP32
-
 #include "PixelDriver.h"
 #include "LityConfig.h"
 
@@ -17,5 +15,3 @@ void PixelDriver::setColor(int pixel, const RGB& color) {
     strip.setPixelColor(pixel, strip.Color(color.red, color.green, color.blue));
     strip.show();
 }
-
-#endif

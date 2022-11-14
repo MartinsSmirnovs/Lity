@@ -1,5 +1,3 @@
-#ifdef BUILD_ESP32
-
 #include "IdleReader.h"
 
 const std::vector<std::pair<gpio_num_t, uint8_t>> IdleReader::dataSelectPairs = {
@@ -39,5 +37,3 @@ void IdleReader::read(FieldsRaw& fields) {
         }
     }
 }
-
-#endif

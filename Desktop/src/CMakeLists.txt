@@ -6,7 +6,8 @@ FILE(GLOB FORMS lity/widgets/*.ui)
 
 include(ExternLibs)
 
-add_library(${TARGET_NAME}
+add_library(
+    ${TARGET_NAME}
     ${HEADER_FILES}
     ${SOURCE_FILES}
     ${FORMS}
