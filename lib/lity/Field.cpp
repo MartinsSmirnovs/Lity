@@ -1,3 +1,6 @@
+#ifndef BUILD_ESP32
+#include <string>
+#endif
 #include "Field.h"
 #include <stdexcept>
 

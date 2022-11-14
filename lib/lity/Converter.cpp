@@ -2,6 +2,7 @@
 #include "LityConfig.h"
 
 Point Converter::toFieldId(int rawId) {
+#ifdef BUILD_ESP32
     switch (rawId) {
         case 0:
             return { 0, 0 };
@@ -82,6 +83,11 @@ Point Converter::toFieldId(int rawId) {
             return Point();
             break;
     }
+#else
+    const int y = rawId / sideSize;
+    const int x = rawId % sideSize;
+    return Point(y, x);
+#endif
 }
 
 void Converter::toFields(const FieldsRaw& rawFields, Fields& fields) {
@@ -121,6 +127,7 @@ int Converter::toId(const Point& point, int rows) {
 }
 
 int Converter::toStripId(int id) {
+#ifdef BUILD_ESP32
     int result = 0;
     switch (id) {
         case 0:
@@ -202,4 +209,7 @@ int Converter::toStripId(int id) {
             return -1;
             break;
     }
+#else
+    return id;
+#endif
 }

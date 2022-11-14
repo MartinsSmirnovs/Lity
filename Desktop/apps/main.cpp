@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <lity/logic/LityLogic.h>
+#include <lity/LityLogic.h>
 #include <lity/widgets/MainWindow.h>
 
 int main(int argc, char* argv[]) {

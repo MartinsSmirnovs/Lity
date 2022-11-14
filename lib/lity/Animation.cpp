@@ -13,3 +13,7 @@ auto Animation::getPoint() const -> const Point& {
 auto Animation::getColor() const -> const RGB& {
     return colorCurrent;
 }
+
+auto Animation::getTarget() const -> const RGB& {
+    return colorTarget;
+}

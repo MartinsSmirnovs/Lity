@@ -1,5 +1,11 @@
-#include "Fade.h"
+#ifdef BUILD_ESP32
 #include <cmath>
+#else
+#define _USE_MATH_DEFINES
+#include <math.h>
+#endif
+
+#include "Fade.h"
 #include <limits>
 
 Fade::Fade(const RGB& colorCurrent, const RGB& colorTarget, const Point& point)
@@ -78,7 +84,10 @@ uint8_t Fade::calculate(int time, Direction direction) const {
 
     constexpr float range = Animation::appearance;
 
-    const uint8_t result = yOffset + amplitude * std::cos(pi / range * time + pi * direction);
+#ifdef BUILD_ESP32
+    using namespace std;
+#endif
+    const uint8_t result = yOffset + amplitude * cos(pi / range * time + pi * direction);
 
     return result;
 }

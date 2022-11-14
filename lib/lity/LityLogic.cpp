@@ -3,6 +3,7 @@
 #include "Converter.h"
 #include "CrossCalculator.h"
 #include "Differ.h"
+#include <stdexcept>
 
 void LityLogic::populateFields(const FieldsRaw& rawFields) {
     Converter::toFields(rawFields, fields);
@@ -32,15 +33,22 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
 
     // Get price to pay for upgrade
     const auto price = CrossCalculator::price(crossMiddleList, fields);
-    // Funds are current fields before they become spend (black)
-    const auto funds = calculateFunds(price);
-
     // Pay for upgrades by darkening fields around middle point of cross
     applyPayment(price);
+
+    // Funds are current fields before they become spent (black)
+    const auto funds = calculateFunds(price);
 
     AnimationList animations;
     createPaymentAnimations(funds, price, animations);
     createAppearingAnimation(fieldPrevious, field, point, animations);
+
+    // Generates list of points which got updated
+    // Note that there could be duplicates
+    updatedPoints.clear();
+    appendTo(updatedPoints, price);
+    appendTo(updatedPoints, crossMiddleList);
+    appendTo(updatedPoints, point);
 
     return animations;
 }
@@ -115,4 +123,27 @@ std::pair<int, Field> LityLogic::makeField(const FieldsRaw& fieldsLeft, const Fi
     }
 
     return std::pair<int, Field>(id, Field(value));
+}
+
+const Fields& LityLogic::getFields() const {
+    return fields;
+}
+
+auto LityLogic::getUpdatedPoints() const -> const PointList& {
+    return updatedPoints;
+}
+
+void LityLogic::appendTo(PointList& pointList, const FieldPointList& appendable) const {
+    for (const auto& element : appendable) {
+        const auto& point = element.second;
+        appendTo(pointList, point);
+    }
+}
+
+void LityLogic::appendTo(PointList& pointList, const PointList& appendable) const {
+    pointList.insert(pointList.end(), appendable.begin(), appendable.end());
+}
+
+void LityLogic::appendTo(PointList& pointList, const Point& appendable) const {
+    pointList.push_back(appendable);
 }
