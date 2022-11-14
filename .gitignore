@@ -3,5 +3,5 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-Desktop/CMakeLists.txt.user
-Desktop/build/*
+CMakeLists.txt.user
+build/*
