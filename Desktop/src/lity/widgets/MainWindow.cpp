@@ -140,7 +140,6 @@ void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
         const auto x = point.x;
 
         const auto& field = logic.getFields()[y][x];
-        qDebug() << "here";
         setText(button, field.getBuilding());
     }
 
