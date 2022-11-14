@@ -20,6 +20,7 @@ public:
 public slots:
     void onButtonFieldClicked(QAbstractButton* button);
     void onButtonColorClicked(QAbstractButton* button);
+    void onOpenSettings();
 
 private:
     Ui::MainWindow* ui;

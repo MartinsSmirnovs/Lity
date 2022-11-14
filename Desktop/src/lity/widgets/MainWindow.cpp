@@ -1,10 +1,8 @@
 #include "MainWindow.h"
+#include "SettingsWindow.h"
 #include "ui_MainWindow.h"
 #include <QButtonGroup>
 #include <QDebug>
-#include <QHBoxLayout>
-#include <QMetaMethod>
-#include <QObject>
 #include <lity/Converter.h>
 #include <lity/Differ.h>
 
@@ -21,19 +19,15 @@ MainWindow::MainWindow(QWidget* parent)
     groupFields->setExclusive(false);
 
     for (int i = 0; i < sideSize; i++) {
-        auto layout = new QHBoxLayout(this);
-        layout->setSpacing(2);
-
         for (int j = 0; j < sideSize; j++) {
             auto button = new QPushButton(this);
             button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-            layout->addWidget(button);
             groupFields->addButton(button);
             groupFields->setId(button, i * sideSize + j);
-        }
 
-        ui->fieldsContainer->layout()->addItem(layout);
+            ui->fieldsContainer->addWidget(button, j, i);
+        }
     }
 
     connect(groupFields, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonFieldClicked);
@@ -56,6 +50,8 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(ui->clearButton, &QPushButton::clicked, this, &MainWindow::clearFields);
     clearFields();
+
+    connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::onOpenSettings);
 }
 
 void MainWindow::clearFields() {
@@ -199,6 +195,12 @@ void MainWindow::setText(QAbstractButton& button, Field::Building building) cons
     }
 
     button.setText(buttonText);
+}
+
+void MainWindow::onOpenSettings() {
+    auto settings = new SettingsWindow(this);
+    settings->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
+    settings->show();
 }
 
 MainWindow::~MainWindow() {
