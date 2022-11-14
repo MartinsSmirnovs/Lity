@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "Converter.h"
 #include <unity.h>
 
@@ -22,5 +20,3 @@ void testConverter_toId() {
         TEST_ASSERT_EQUAL_INT(24, result);
     }
 }
-
-#endif

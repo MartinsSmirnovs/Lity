@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "Differ.h"
 #include "LityConfig.h"
 #include <unity.h>
@@ -42,5 +40,3 @@ void testDiffer_areAllElementsSame() {
 
     TEST_ASSERT_FALSE(Differ::areAllElementsSame(values));
 }
-
-#endif

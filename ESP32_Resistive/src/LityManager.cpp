@@ -1,5 +1,3 @@
-#ifdef BUILD_ESP32
-
 #include "LityManager.h"
 #include "Converter.h"
 #include "Differ.h"
@@ -86,5 +84,3 @@ void LityManager::updatePreviousFields() {
 int LityManager::toId(const Point& point) const {
     return Converter::toId(point, sideSize);
 }
-
-#endif

@@ -1,4 +1,3 @@
-#ifdef BUILD_ESP32
 #include "LityManager.h"
 
 LityManager manager;
@@ -12,5 +11,3 @@ void loop() {
     manager.run();
     delay(10);
 }
-
-#endif

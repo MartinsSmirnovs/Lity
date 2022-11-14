@@ -1,5 +1,4 @@
 #pragma once
-#ifdef BUILD_ESP32
 
 #include "RGB.h"
 #include <Adafruit_NeoPixel.h>
@@ -14,5 +13,3 @@ public:
 private:
     Adafruit_NeoPixel strip;
 };
-
-#endif

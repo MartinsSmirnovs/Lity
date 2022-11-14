@@ -1,5 +1,3 @@
-#ifdef BUILD_TESTS
-
 #include "Blink.h"
 #include "Fade.h"
 #include <unity.h>
@@ -89,5 +87,3 @@ void testBlink_Update() {
         TEST_ASSERT_EQUAL_INT(0, color.blue);
     }
 }
-
-#endif
