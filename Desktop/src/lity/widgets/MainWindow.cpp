@@ -149,8 +149,7 @@ void MainWindow::automaticProcess(QAbstractButton& button) {
 }
 
 void MainWindow::manualProcess(QAbstractButton& button) {
-    const auto buttonId = groupFields->id(&button);
-    const auto& color   = Field::getColor(currentType);
+    const auto& color = Field::getColor(currentType);
     setColor(button, color);
     setText(button, currentBuilding);
 }
