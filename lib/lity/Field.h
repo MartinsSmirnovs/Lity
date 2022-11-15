@@ -6,7 +6,8 @@
 
 class Field {
 public:
-    enum Type {
+    enum Type
+    {
         white  = 0,
         blue   = 738,
         red    = 1540,
@@ -16,7 +17,8 @@ public:
         none   = 4095
     };
 
-    enum class Building {
+    enum class Building
+    {
         levelNone,
         levelFirst,
         levelSecond,
@@ -30,6 +32,7 @@ public:
 
     Type getType() const;
     Building getBuilding() const;
+    static const RGB& getColor(Type type);
     const RGB& getColor() const;
 
     // returns true if upgraded building, false if did not

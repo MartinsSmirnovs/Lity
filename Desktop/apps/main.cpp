@@ -6,10 +6,10 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
+    DynamicSettings::instance(QApplication::applicationDirPath() + "/settings.ini", QCoreApplication::instance());
+
     MainWindow w;
     w.show();
-
-    DynamicSettings::instance(QApplication::applicationDirPath() + "/settings.ini", QCoreApplication::instance());
 
     const int returnCode = app.exec();
 

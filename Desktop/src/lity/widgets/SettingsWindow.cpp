@@ -21,10 +21,19 @@ void SettingsWindow::saveInput(QAbstractButton* clickedButton) {
     const auto buttonRole = ui->buttonBox->standardButton(clickedButton);
 
     if (buttonRole == QDialogButtonBox::Ok) {
-        auto settings                   = DynamicSettings::instance();
-        const bool isAutoPaymentChecked = ui->autoPaymentCheckBox->isChecked();
-        settings->setAutomaticPayment(isAutoPaymentChecked);
-        setResult(Accepted);
+        auto settings                      = DynamicSettings::instance();
+        const bool isAutoPaymentChecked    = ui->autoPaymentCheckBox->isChecked();
+        const bool currentAutomaticPayment = settings->getAutomaticPayment();
+
+        // Do not do anything if settings did not change
+        if (isAutoPaymentChecked == currentAutomaticPayment) {
+            setResult(Rejected);
+        } else {
+            // Save setting if it has changed
+            settings->setAutomaticPayment(isAutoPaymentChecked);
+            setResult(Accepted);
+        }
+
     } else {
         setResult(Rejected);
     }

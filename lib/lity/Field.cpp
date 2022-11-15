@@ -57,6 +57,10 @@ void Field::setType(Type type) {
 }
 
 const RGB& Field::getColor() const {
+    return getColor(type);
+}
+
+const RGB& Field::getColor(Type type) {
     if (type == none) {
         return typeColorMap.at(black);
     }
