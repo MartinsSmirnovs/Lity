@@ -2,6 +2,8 @@ set(TARGET_NAME lity_desktop_app)
 
 include(ExternLibs)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/settings.ini.in settings.ini)
+
 add_executable(${TARGET_NAME}
     WIN32
     main.cpp

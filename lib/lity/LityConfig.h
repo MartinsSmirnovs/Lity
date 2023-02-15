@@ -3,7 +3,12 @@
 #include "Field.h"
 #include <array>
 
-constexpr int sideSize    = 5;
+#ifdef BUILD_ESP32
+constexpr int sideSize = 5;
+#else
+constexpr int sideSize = 12;
+#endif
+
 constexpr int fieldsCount = sideSize * sideSize;
 
 using FieldsRaw = std::array<int, fieldsCount>;

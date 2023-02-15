@@ -1,10 +1,9 @@
 #include "MainWindow.h"
+#include "DynamicSettings.h"
+#include "SettingsWindow.h"
 #include "ui_MainWindow.h"
 #include <QButtonGroup>
 #include <QDebug>
-#include <QHBoxLayout>
-#include <QMetaMethod>
-#include <QObject>
 #include <lity/Converter.h>
 #include <lity/Differ.h>
 
@@ -20,20 +19,17 @@ MainWindow::MainWindow(QWidget* parent)
 
     groupFields->setExclusive(false);
 
+    const QSize buttonSize = QSize(60, 60);
     for (int i = 0; i < sideSize; i++) {
-        auto layout = new QHBoxLayout(this);
-        layout->setSpacing(2);
-
         for (int j = 0; j < sideSize; j++) {
             auto button = new QPushButton(this);
-            button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            button->setFixedSize(buttonSize);
 
-            layout->addWidget(button);
             groupFields->addButton(button);
             groupFields->setId(button, i * sideSize + j);
-        }
 
-        ui->fieldsContainer->layout()->addItem(layout);
+            ui->fieldsContainer->addWidget(button, j, i);
+        }
     }
 
     connect(groupFields, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonFieldClicked);
@@ -56,6 +52,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(ui->clearButton, &QPushButton::clicked, this, &MainWindow::clearFields);
     clearFields();
+
+    connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::onOpenSettings);
+
+    setupBuildingMenu();
 }
 
 void MainWindow::clearFields() {
@@ -102,8 +102,8 @@ Field::Type toFieldType(const RGB& color) {
     return Field::black;
 }
 
-void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
-    const auto rawId     = groupFields->id(button);
+void MainWindow::automaticProcess(QAbstractButton& button) {
+    const auto rawId     = groupFields->id(&button);
     fieldsCurrent[rawId] = currentType;
 
     // Return if there is no diff between readings
@@ -146,6 +146,23 @@ void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
     animations.clear();
 
     fieldsPrevious = fieldsCurrent;
+}
+
+void MainWindow::manualProcess(QAbstractButton& button) {
+    const auto& color = Field::getColor(currentType);
+    setColor(button, color);
+    setText(button, currentBuilding);
+}
+
+void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
+    const auto settings    = DynamicSettings::instance();
+    const bool isAutomatic = settings->getAutomaticPayment();
+
+    if (isAutomatic) {
+        automaticProcess(*button);
+    } else {
+        manualProcess(*button);
+    }
 }
 
 QString toColorName(const RGB& color) {
@@ -199,6 +216,47 @@ void MainWindow::setText(QAbstractButton& button, Field::Building building) cons
     }
 
     button.setText(buttonText);
+}
+
+void MainWindow::onOpenSettings() {
+    auto settingsWindow = new SettingsWindow(this);
+    settingsWindow->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
+    settingsWindow->show();
+    connect(settingsWindow, &QDialog::finished, this, &MainWindow::onSettingsWindowClosed);
+}
+
+void MainWindow::onSettingsWindowClosed(int result) {
+    if (result == QDialog::Accepted) {
+        displayBuildingsMenu();
+        clearFields();
+    }
+}
+
+void MainWindow::setupBuildingMenu() {
+    groupBuildings = new QButtonGroup(this);
+
+    groupBuildings->addButton(ui->levelNone, static_cast<int>(Field::Building::levelNone));
+    groupBuildings->addButton(ui->levelOne, static_cast<int>(Field::Building::levelFirst));
+    groupBuildings->addButton(ui->levelTwo, static_cast<int>(Field::Building::levelSecond));
+    groupBuildings->addButton(ui->levelThree, static_cast<int>(Field::Building::levelThird));
+
+    connect(groupBuildings, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonBuildingClicked);
+
+    displayBuildingsMenu();
+}
+
+void MainWindow::onButtonBuildingClicked(QAbstractButton* button) {
+    currentBuilding = static_cast<Field::Building>(groupBuildings->id(button));
+}
+
+void MainWindow::displayBuildingsMenu() {
+    const auto settings = DynamicSettings::instance();
+
+    if (settings->getAutomaticPayment()) {
+        ui->levelContainer->hide();
+    } else {
+        ui->levelContainer->show();
+    }
 }
 
 MainWindow::~MainWindow() {
