@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <lity/Converter.h>
 #include <lity/Differ.h>
+#include <lity/Figure.h>
 
 MainWindow::MainWindow(QWidget* parent)
 : QMainWindow(parent),
@@ -111,7 +112,7 @@ void MainWindow::automaticProcess(QAbstractButton& button) {
         return;
     }
 
-    LityLogic::AnimationList animations;
+    Figure::AnimationList animations;
     try {
         animations = logic.process(fieldsPrevious, fieldsCurrent);
     } catch (std::exception& exception) {

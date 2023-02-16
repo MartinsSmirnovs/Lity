@@ -6,9 +6,11 @@
 class Animation {
 public:
     // Value of Type is it's animation interval
-    enum Type {
+    enum Type
+    {
+        none       = 0,   // none
         appearance = 250, // fade
-        payment    = 300 // blink
+        payment    = 300  // blink
     };
 
     Animation(const RGB& colorCurrent, const RGB& colorTarget, const Point& point);

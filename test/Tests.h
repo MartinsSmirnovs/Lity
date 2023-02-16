@@ -18,3 +18,5 @@ void testPoint_OperatorEquals();
 void testPoint_ConstructorEqualsNot();
 void testFade_Update();
 void testBlink_Update();
+void testCross_find();
+void testCross_apply();

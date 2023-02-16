@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Animation.h"
 #include "CrossCalculator.h"
+#include "Figure.h"
 #include "LityConfig.h"
 #include <memory>
 
@@ -9,11 +9,10 @@ class LityLogic {
     using FieldPointList = CrossCalculator::FieldPointList;
     using PointList      = CrossCalculator::PointList;
 
-    using IAnimation = std::shared_ptr<Animation>;
+    using IFigure       = std::shared_ptr<Figure>;
+    using AnimationList = Figure::AnimationList;
 
 public:
-    using AnimationList = std::vector<IAnimation>;
-
     AnimationList process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight);
     void populateFields(const FieldsRaw& rawFields);
 
@@ -24,7 +23,7 @@ private:
     Fields fields;
     PointList updatedPoints;
 
-    std::pair<int, Field> makeField(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) const;
+    FieldPoint makeFieldPoint(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) const;
 
     void createAppearingAnimation(const Field& left, const Field& right, const Point& point, AnimationList& list) const;
     void createPaymentAnimations(const FieldPointList& left, const FieldPointList& right, AnimationList& list) const;
@@ -37,4 +36,6 @@ private:
     void appendTo(PointList& pointList, const Point& appendable) const;
 
     void removeDuplicates(PointList& list) const;
+
+    IFigure findFigure(const Fields& fields, const FieldPoint& fieldPoint) const;
 };

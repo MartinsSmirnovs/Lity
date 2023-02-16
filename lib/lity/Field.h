@@ -14,11 +14,14 @@ public:
         green  = 2457,
         purple = 3276,
         black  = 4076,
-        none   = 4095
+        none   = 4095,
+        any,   // special case to indicate any of the colors
+        target // special case to indicate color in context
     };
 
     enum class Building
     {
+        levelAny, // special case to indicate any of the buildings
         levelNone,
         levelFirst,
         levelSecond,
