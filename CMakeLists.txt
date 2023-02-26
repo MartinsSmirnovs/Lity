@@ -10,6 +10,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 project(${TARGET_NAME})
 
+include(CTest)
+
 add_subdirectory(Desktop/src)
 add_subdirectory(Desktop/apps)
 add_subdirectory(ESP32_Resistive)

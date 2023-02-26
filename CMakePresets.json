@@ -1,0 +1,52 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 23,
+      "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "Common",
+            "hidden": true,
+            "cacheVariables": {
+                "Qt5Core_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Core",
+                "Qt5Gui_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Gui",
+                "Qt5Widgets_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Widgets",
+                "Qt5_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5",
+                "QT_QMAKE_EXECUTABLE": "C:/Qt/5.15.2/msvc2019_64/bin/qmake.exe"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "Release",
+            "displayName": "Release",
+            "description": "Release configuration",
+            "inherits": [ "Common" ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            },
+            "binaryDir": "${sourceDir}/build/Release"
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Release",
+            "configurePreset": "Release",
+            "targets": [
+                "all",
+                "lity_desktop_app",
+                "mock_target"
+            ]
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "lity_esp32_resistive_x86_test",
+            "configurePreset": "Release",
+            "output": {
+                "verbosity": "verbose"
+            }
+        }
+    ]
+}
