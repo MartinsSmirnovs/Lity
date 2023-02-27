@@ -1,6 +1,6 @@
 {
     "editor.formatOnSave" : true,
-    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
     "C_Cpp.autoAddFileAssociations": false,
     "C_Cpp.intelliSenseEngine": "disabled",
     "cmake.copyCompileCommands": "${workspaceFolder}/compile_commands.json"

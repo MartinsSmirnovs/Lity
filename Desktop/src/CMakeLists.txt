@@ -13,7 +13,12 @@ add_library(
     ${FORMS}
 )
 
-target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lity ${CMAKE_SOURCE_DIR}/lib)
+target_include_directories(${TARGET_NAME} PRIVATE
+                           ${CMAKE_CURRENT_SOURCE_DIR}/lity/widgets
+                           ${CMAKE_SOURCE_DIR}/lib)
+
+target_include_directories(${TARGET_NAME} PUBLIC
+                           ${CMAKE_CURRENT_SOURCE_DIR}/lity)
 
 ADDQT5CORE(${TARGET_NAME})
 ADDQT5WIDGETS(${TARGET_NAME})

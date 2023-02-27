@@ -15,6 +15,6 @@ target_link_libraries(${TARGET_NAME} PRIVATE lity_desktop_src)
 ADDQT5CORE(${TARGET_NAME})
 ADDQT5WIDGETS(${TARGET_NAME})
 
+# Copies all required libraries to start GUI application
 add_custom_target(${TARGET_NAME}_deploy ALL C:/Qt/5.15.2/msvc2019_64/bin/windeployqt.exe ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.exe)
-
 add_dependencies(${TARGET_NAME}_deploy ${TARGET_NAME})
