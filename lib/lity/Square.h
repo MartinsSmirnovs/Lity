@@ -2,7 +2,9 @@
 
 #include "Figure.h"
 
-class Cross : public Figure {
+class Square : public Figure
+{
 public:
-    Cross();
+    Square();
 };
+

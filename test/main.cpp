@@ -1,10 +1,10 @@
 #include "Tests.h"
 #include <unity.h>
 
-void setUp(void) {
+void setUp() {
 }
 
-void tearDown(void) {
+void tearDown() {
 }
 
 int main(int argc, char** argv) {
@@ -31,5 +31,7 @@ int main(int argc, char** argv) {
     // RUN_TEST(testBlink_Update);
     RUN_TEST(testCross_find);
     RUN_TEST(testCross_apply);
+    RUN_TEST(testSquare_find);
+    RUN_TEST(testSquare_apply);
     UNITY_END();
 }

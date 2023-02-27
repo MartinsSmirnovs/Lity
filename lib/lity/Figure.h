@@ -14,22 +14,25 @@ class Figure {
 public:
     using AnimationList = std::vector<AnimationPoint>;
 
-    virtual bool find(const Fields& fields, const FieldPoint& fieldPoint) const     = 0;
-    virtual AnimationList apply(Fields& fields, const FieldPoint& fieldPoint) const = 0;
+    bool find(const Fields& fields, const FieldPoint& fieldPoint) const;
+    AnimationList apply(Fields& fields, const FieldPoint& fieldPoint) const;
 
 protected:
+    using Building = Field::Building;
     struct Description {
         Point center;
         std::vector<std::vector<Field::Type>> colorMask;
         std::vector<std::vector<Field::Type>> paymentMask;
-    };
-
-    using Building = Field::Building;
-    struct Description2 : public Description {
         std::vector<std::vector<Building>> buildingMask;
         std::vector<std::vector<bool>> upgradeMask;
         std::vector<std::vector<Animation::Type>> animationMask;
-    };
+    } description;
+
+    bool checkColorMask(const Fields& fields, const FieldPoint& fieldPoint) const;
+    bool checkBuildingMask(const Fields& fields, const FieldPoint& fieldPoint) const;
+    void applyUpgradeMask(Fields& fields, const FieldPoint& fieldPoint) const;
+    void applyPaymentMask(Fields& fields, const FieldPoint& fieldPoint) const;
+    AnimationList createAnimationList(const FieldPoint& fieldPoint) const;
 
     template <typename TwoDimensionalVector>
     bool checkMask(const FieldPoint& fieldPoint,
@@ -58,7 +61,7 @@ protected:
                    const TwoDimensionalVector& mask,
                    const Point& center,
                    const std::function<void(int x, int y, typename TwoDimensionalVector::value_type::value_type maskValue)> apply) const {
-        // a bit sketchy reusage of checkMask which contains all required functionality
+        // a bit hacky reusage of checkMask which contains all required functionality
         const auto booleanApply = [&](int x, int y, typename TwoDimensionalVector::value_type::value_type maskValue) {
             apply(x, y, maskValue);
             return true;

@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QAbstractButton>
 #include <QMainWindow>
@@ -50,5 +49,3 @@ private:
     void automaticProcess(QAbstractButton& button);
     void manualProcess(QAbstractButton& button);
 };
-
-#endif // MAINWINDOW_H

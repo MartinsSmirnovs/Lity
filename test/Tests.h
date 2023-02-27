@@ -20,3 +20,5 @@ void testFade_Update();
 void testBlink_Update();
 void testCross_find();
 void testCross_apply();
+void testSquare_find();
+void testSquare_apply();

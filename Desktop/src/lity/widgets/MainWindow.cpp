@@ -120,29 +120,29 @@ void MainWindow::automaticProcess(QAbstractButton& button) {
     }
 
     for (const auto& animation : animations) {
-        const auto point = animation->getPoint();
-        const auto id    = Converter::toId(point, sideSize);
-        auto& button     = *groupFields->button(id);
+        // const auto point = animation.second;
+        // const auto id    = Converter::toId(point, sideSize);
+        // auto& button     = *groupFields->button(id);
 
-        const auto& color = animation->getTarget();
+        // const auto& color = animation.first.getColor();
 
-        setColor(button, color);
+        // setColor(button, color);
 
-        // Update our local fields buffer so it would not get surprises
-        // on next read
-        fieldsCurrent[id] = toFieldType(color);
+        // // Update our local fields buffer so it would not get surprises
+        // // on next read
+        // fieldsCurrent[id] = toFieldType(color);
     }
 
-    for (const auto& point : logic.getUpdatedPoints()) {
-        const auto id = Converter::toId(point, sideSize);
-        auto& button  = *groupFields->button(id);
+    // for (const auto& point : logic.getUpdatedPoints()) {
+        // const auto id = Converter::toId(point, sideSize);
+        // auto& button  = *groupFields->button(id);
 
-        const auto y = point.y;
-        const auto x = point.x;
+        // const auto y = point.y;
+        // const auto x = point.x;
 
-        const auto& field = logic.getFields()[y][x];
-        setText(button, field.getBuilding());
-    }
+        // const auto& field = logic.getFields()[y][x];
+        // setText(button, field.getBuilding());
+    // }
 
     animations.clear();
 

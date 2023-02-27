@@ -6,4 +6,4 @@ add_test(NAME ${TARGET_NAME}_x86_test
 
 # Empty target that allows to not to build anything and
 # perform testing right away in vscode
-add_custom_target(mock_target)
+add_custom_target(testing)
