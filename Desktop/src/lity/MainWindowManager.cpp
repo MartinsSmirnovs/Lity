@@ -1,6 +1,9 @@
 #include "MainWindowManager.h"
 #include "DynamicSettings.h"
 #include "FieldDescriptor.h"
+#include <QDebug>
+#include <lity/Differ.h>
+
 
 MainWindowManager::MainWindowManager(QObject* parent)
 : QObject(parent) {
@@ -31,15 +34,33 @@ void MainWindowManager::buttonFieldClicked(int id) {
     const bool isAutomatic = settings->getAutomaticPayment();
 
     if (isAutomatic) {
-        // automaticProcess(*button);
+        automaticProcess(id);
     } else {
         manualProcess(id);
     }
 }
 
-void MainWindowManager::manualProcess(int buttonId) {
+void MainWindowManager::automaticProcess(int fieldId) {
+    fieldsCurrent[fieldId] = currentType;
+
+    // Return if there is no diff between readings
+    if (Differ::equal(fieldsPrevious, fieldsCurrent)) {
+        return;
+    }
+
+    Figure::AnimationList animations;
+    try {
+        animations = logic.process(fieldsPrevious, fieldsCurrent);
+    } catch (std::exception& exception) {
+        qDebug() << exception.what();
+    }
+
+    // STOPPED HERE! HAVE TO COPY PASTE CODE HERE FROM MAINWINDOW.CPP!!
+}
+
+void MainWindowManager::manualProcess(int fieldId) {
     FieldDescriptor fieldDescriptor;
-    fieldDescriptor.id    = buttonId;
+    fieldDescriptor.id    = fieldId;
     fieldDescriptor.text  = getCurrentBuildingText();
     fieldDescriptor.color = Field::getColor(currentType);
 

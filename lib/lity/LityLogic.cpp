@@ -135,19 +135,19 @@ auto LityLogic::findFigure(const Fields& fields, const FieldPoint& fieldPoint) c
 //}
 
 FieldPoint LityLogic::makeFieldPoint(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRight) const {
-   const auto idValuePair = Differ::diff(fieldsLeft, fieldsRight);
+    const auto idValuePair = Differ::diff(fieldsLeft, fieldsRight);
 
-   const auto id    = idValuePair.first;
-   const auto value = idValuePair.second;
+    const auto id    = idValuePair.first;
+    const auto value = idValuePair.second;
 
-   if (value == Differ::noDifference) {
-       throw std::runtime_error("No difference between raw fields values!");
-   }
+    if (value == Differ::noDifference) {
+        throw std::runtime_error("No difference between raw fields values!");
+    }
 
-   const auto& point = Converter::toFieldId(id);
-   const auto& field = Field(value);
+    const auto& point = Converter::toFieldId(id);
+    const auto& field = Field(value);
 
-   return std::make_pair(field, point);
+    return std::make_pair(field, point);
 }
 
 // const Fields& LityLogic::getFields() const {

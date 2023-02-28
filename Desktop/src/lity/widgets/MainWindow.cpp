@@ -2,7 +2,6 @@
 #include "SettingsWindow.h"
 #include "ui_MainWindow.h"
 #include <QButtonGroup>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent)
 : QMainWindow(parent),

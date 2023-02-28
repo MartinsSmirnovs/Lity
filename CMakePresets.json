@@ -32,18 +32,41 @@
                 "CMAKE_BUILD_TYPE": "Release"
             },
             "binaryDir": "${sourceDir}/build/Release"
+        },
+        {
+            "name": "Debug",
+            "displayName": "Debug",
+            "description": "Debug configuration",
+            "inherits": [ "Common" ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "binaryDir": "${sourceDir}/build/Debug"
         }
     ],
     "buildPresets": [
         {
-            "name": "Release",
-            "configurePreset": "Release",
+            "name": "Common",
+            "hidden": true,
             "targets": [
                 "all",
                 "lity_desktop_app",
                 "lity_desktop_app_deploy",
                 "testing"
             ]
+        },
+        {
+            "name": "Release build",
+            "configurePreset": "Release",
+            "inherits": [ "Common" ]
+
+        }
+        ,
+        {
+            "name": "Debug build",
+            "configurePreset": "Debug",
+            "inherits": [ "Common" ]
+
         }
     ],
     "testPresets": [

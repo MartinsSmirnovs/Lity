@@ -28,6 +28,7 @@ private:
     Field::Type currentType         = Field::black;
     Field::Building currentBuilding = Field::Building::levelNone;
 
-    void manualProcess(int buttonId);
+    void manualProcess(int fieldId);
+    void automaticProcess(int fieldId);
     QString getCurrentBuildingText() const;
 };
