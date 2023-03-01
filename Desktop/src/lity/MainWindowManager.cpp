@@ -74,6 +74,10 @@ void MainWindowManager::automaticProcess(int fieldId) {
 
     emit updateFieldsEvent(fieldsDescriptors);
 
+    // On next move the figure gets moved to another field and previous
+    // field becomes none
+    fieldsCurrent[fieldId] = Field::Type::none;
+
     fieldsPrevious = fieldsCurrent;
 }
 
