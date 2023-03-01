@@ -31,11 +31,6 @@ public slots:
 private:
     Ui::MainWindow* ui;
 
-    FieldsRaw fieldsPrevious;
-    FieldsRaw fieldsCurrent;
-
-    LityLogic logic;
-
     QButtonGroup* groupFields;
     QButtonGroup* groupColors;
     QButtonGroup* groupBuildings;
@@ -45,8 +40,6 @@ private:
     void setColor(QAbstractButton& button, RGB color) const;
 
     void clearFields();
-
-    void automaticProcess(QAbstractButton& button);
 
     void initializeFields();
     void initializeColorSelectionPanel();

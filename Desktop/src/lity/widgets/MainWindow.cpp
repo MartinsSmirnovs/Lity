@@ -116,52 +116,6 @@ Field::Type toFieldType(const RGB& color) {
     return Field::black;
 }
 
-void MainWindow::automaticProcess(QAbstractButton& button) {
-    // const auto rawId     = groupFields->id(&button);
-    // fieldsCurrent[rawId] = currentType;
-
-    // // Return if there is no diff between readings
-    // if (Differ::equal(fieldsPrevious, fieldsCurrent)) {
-    //     return;
-    // }
-
-    // Figure::AnimationList animations;
-    // try {
-    //     animations = logic.process(fieldsPrevious, fieldsCurrent);
-    // } catch (std::exception& exception) {
-    //     qDebug() << exception.what();
-    // }
-
-    // for (const auto& animation : animations) {
-    // const auto point = animation.second;
-    // const auto id    = Converter::toId(point, sideSize);
-    // auto& button     = *groupFields->button(id);
-
-    // const auto& color = animation.first.getColor();
-
-    // setColor(button, color);
-
-    // // Update our local fields buffer so it would not get surprises
-    // // on next read
-    // fieldsCurrent[id] = toFieldType(color);
-    // }
-
-    // for (const auto& point : logic.getUpdatedPoints()) {
-    // const auto id = Converter::toId(point, sideSize);
-    // auto& button  = *groupFields->button(id);
-
-    // const auto y = point.y;
-    // const auto x = point.x;
-
-    // const auto& field = logic.getFields()[y][x];
-    // setText(button, field.getBuilding());
-    // }
-
-    // animations.clear();
-
-    // fieldsPrevious = fieldsCurrent;
-}
-
 void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
     const int id = groupFields->id(button);
     manager.buttonFieldClicked(id);
