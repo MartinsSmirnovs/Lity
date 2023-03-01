@@ -60,6 +60,10 @@ auto LityLogic::process(const FieldsRaw& fieldsLeft, const FieldsRaw& fieldsRigh
     //    return animations;
 }
 
+const Field& LityLogic::getFieldAt(const Point& point) const {
+    return getFields()[point.y][point.x];
+}
+
 auto LityLogic::findFigure(const Fields& fields, const FieldPoint& fieldPoint) const -> IFigure {
     FigureFactory figureFactory;
     IFigure figure;
@@ -150,9 +154,9 @@ FieldPoint LityLogic::makeFieldPoint(const FieldsRaw& fieldsLeft, const FieldsRa
     return std::make_pair(field, point);
 }
 
-// const Fields& LityLogic::getFields() const {
-//    return fields;
-// }
+const Fields& LityLogic::getFields() const {
+   return fields;
+}
 
 // auto LityLogic::getUpdatedPoints() const -> const PointList& {
 //    return updatedPoints;

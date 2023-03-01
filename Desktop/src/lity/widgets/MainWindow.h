@@ -26,7 +26,7 @@ public slots:
     void onOpenSettings();
     void onSettingsWindowClosed(int result);
     void displayBuildingSelectionMenu();
-    void onFieldsUpdate(const FieldDescriptorsList& descriptionList);
+    void onFieldsUpdate(const FieldDescriptorList& descriptionList);
 
 private:
     Ui::MainWindow* ui;

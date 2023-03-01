@@ -17,6 +17,7 @@ public:
     void populateFields(const FieldsRaw& rawFields);
 
     const Fields& getFields() const;
+    const Field& getFieldAt(const Point& point) const;
     const PointList& getUpdatedPoints() const;
 
 private:

@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(&manager, &MainWindowManager::updateFieldsEvent, this, &MainWindow::onFieldsUpdate);
 }
 
-void MainWindow::onFieldsUpdate(const FieldDescriptorsList& descriptionList) {
+void MainWindow::onFieldsUpdate(const FieldDescriptorList& descriptionList) {
     for (const auto& description : descriptionList) {
         const int id      = description.id;
         auto& buttonField = *groupFields->button(id);

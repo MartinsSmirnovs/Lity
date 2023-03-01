@@ -17,7 +17,7 @@ public:
     void reset();
 
 signals:
-    void updateFieldsEvent(const FieldDescriptorsList& descriptionList);
+    void updateFieldsEvent(const FieldDescriptorList& descriptionList);
 
 private:
     LityLogic logic;
@@ -31,4 +31,5 @@ private:
     void manualProcess(int fieldId);
     void automaticProcess(int fieldId);
     QString getCurrentBuildingText() const;
+    QString getBuildingText(Field::Building building) const;
 };

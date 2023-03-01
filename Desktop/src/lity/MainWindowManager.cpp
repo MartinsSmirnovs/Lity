@@ -2,7 +2,9 @@
 #include "DynamicSettings.h"
 #include "FieldDescriptor.h"
 #include <QDebug>
+#include <lity/Converter.h>
 #include <lity/Differ.h>
+#include <lity/LityLogic.h>
 
 
 MainWindowManager::MainWindowManager(QObject* parent)
@@ -55,7 +57,20 @@ void MainWindowManager::automaticProcess(int fieldId) {
         qDebug() << exception.what();
     }
 
-    // STOPPED HERE! HAVE TO COPY PASTE CODE HERE FROM MAINWINDOW.CPP!!
+    FieldDescriptorList fieldsDescriptors;
+    for (const auto& animationPoint : animations) {
+        const auto& point = animationPoint.second;
+        const auto& field = logic.getFieldAt(point);
+
+        FieldDescriptor descriptor;
+        descriptor.color = field.getColor();
+        descriptor.id    = Converter::toId(point, sideSize);
+        descriptor.text  = getBuildingText(field.getBuilding());
+
+        fieldsDescriptors.push_back(descriptor);
+    }
+
+    emit updateFieldsEvent(fieldsDescriptors);
 }
 
 void MainWindowManager::manualProcess(int fieldId) {
@@ -67,8 +82,8 @@ void MainWindowManager::manualProcess(int fieldId) {
     emit updateFieldsEvent({ fieldDescriptor });
 }
 
-QString MainWindowManager::getCurrentBuildingText() const {
-    switch (currentBuilding) {
+QString MainWindowManager::getBuildingText(Field::Building building) const {
+    switch (building) {
         case Field::Building::levelFirst: {
             return "I";
         } break;
@@ -82,4 +97,8 @@ QString MainWindowManager::getCurrentBuildingText() const {
             return "";
             break;
     }
+}
+
+QString MainWindowManager::getCurrentBuildingText() const {
+    return getBuildingText(currentBuilding);
 }

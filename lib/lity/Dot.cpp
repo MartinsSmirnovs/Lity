@@ -3,7 +3,6 @@
 
 Dot::Dot()
 : Figure() {
-    // clang-format off
     description.colorMask = {
         { Field::Type::target }
     };
@@ -19,7 +18,6 @@ Dot::Dot()
     description.animationMask = {
         { Animation::Type::appearance },
     };
-    // clang-format on
 
     description.upgradeMask = {
         { 0 }

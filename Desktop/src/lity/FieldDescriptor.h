@@ -10,4 +10,4 @@ struct FieldDescriptor {
     RGB color;
 };
 
-using FieldDescriptorsList = std::vector<FieldDescriptor>;
+using FieldDescriptorList = std::vector<FieldDescriptor>;
