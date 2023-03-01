@@ -71,6 +71,8 @@ void MainWindowManager::automaticProcess(int fieldId) {
     }
 
     emit updateFieldsEvent(fieldsDescriptors);
+
+    fieldsPrevious = fieldsCurrent;
 }
 
 void MainWindowManager::manualProcess(int fieldId) {
