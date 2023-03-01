@@ -1,6 +1,5 @@
 #include "Dot.h"
 
-
 Dot::Dot()
 : Figure() {
     description.colorMask = {

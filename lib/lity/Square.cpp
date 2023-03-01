@@ -10,9 +10,9 @@ Square::Square()
     };
 
     description.buildingMask = {
-        { Building::levelAny,  Building::levelNone, Building::levelAny },
-        { Building::levelNone, Building::levelNone, Building::levelNone },
-        { Building::levelAny,  Building::levelNone, Building::levelAny }
+        { Building::levelAny,  Building::levelNone,  Building::levelAny },
+        { Building::levelNone, Building::levelFirst, Building::levelNone },
+        { Building::levelAny,  Building::levelNone,  Building::levelAny }
     };
 
     description.paymentMask = {

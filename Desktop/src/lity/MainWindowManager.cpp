@@ -68,6 +68,8 @@ void MainWindowManager::automaticProcess(int fieldId) {
         descriptor.text  = getBuildingText(field.getBuilding());
 
         fieldsDescriptors.push_back(descriptor);
+
+        fieldsCurrent[descriptor.id] = field.getType();
     }
 
     emit updateFieldsEvent(fieldsDescriptors);

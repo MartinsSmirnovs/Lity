@@ -12,11 +12,11 @@ Circle::Circle()
     };
 
     description.buildingMask = {
-        { Building::levelAny, Building::levelAny,  Building::levelAny,  Building::levelAny,  Building::levelAny },
-        { Building::levelAny, Building::levelAny,  Building::levelNone, Building::levelAny,  Building::levelAny },
-        { Building::levelAny, Building::levelNone, Building::levelNone, Building::levelNone, Building::levelAny },
-        { Building::levelAny, Building::levelAny,  Building::levelNone, Building::levelAny,  Building::levelAny },
-        { Building::levelAny, Building::levelAny,  Building::levelAny,  Building::levelAny,  Building::levelAny }
+        { Building::levelAny, Building::levelAny,  Building::levelAny,    Building::levelAny,  Building::levelAny },
+        { Building::levelAny, Building::levelAny,  Building::levelNone,   Building::levelAny,  Building::levelAny },
+        { Building::levelAny, Building::levelNone, Building::levelSecond, Building::levelNone, Building::levelAny },
+        { Building::levelAny, Building::levelAny,  Building::levelNone,   Building::levelAny,  Building::levelAny },
+        { Building::levelAny, Building::levelAny,  Building::levelAny,    Building::levelAny,  Building::levelAny }
     };
 
     description.paymentMask = {

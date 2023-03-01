@@ -68,7 +68,7 @@ void Figure::applyUpgradeMask(Fields& fields, const FieldPoint& fieldPoint) cons
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
-    applyMask(fieldPoint, description.colorMask, description.center, [&](int x, int y, bool maskValue) {
+    applyMask(fieldPoint, description.upgradeMask, description.center, [&](int x, int y, bool maskValue) {
         if (maskValue) {
             fields[y][x].upgrade();
         }
