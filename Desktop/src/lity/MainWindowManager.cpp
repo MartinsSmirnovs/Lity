@@ -6,7 +6,6 @@
 #include <lity/Differ.h>
 #include <lity/LityLogic.h>
 
-
 MainWindowManager::MainWindowManager(QObject* parent)
 : QObject(parent) {
 }

@@ -1,13 +1,12 @@
 #pragma once
 
-#include "CrossCalculator.h"
 #include "Figure.h"
 #include "LityConfig.h"
 #include <memory>
 
 class LityLogic {
-    using FieldPointList = CrossCalculator::FieldPointList;
-    using PointList      = CrossCalculator::PointList;
+    using FieldPointList = std::vector<FieldPoint>;
+    using PointList      = std::vector<Point>;
 
     using IFigure       = std::shared_ptr<Figure>;
     using AnimationList = Figure::AnimationList;

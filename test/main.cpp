@@ -18,9 +18,6 @@ int main(int argc, char** argv) {
     // RUN_TEST(testField_getColor);
     // RUN_TEST(testField_upgrade);
     // RUN_TEST(testField_operatorEquals);
-    // RUN_TEST(testCrossCalculator_find);
-    // RUN_TEST(testCrossCalculator_upgrade);
-    // RUN_TEST(testCrossCalculator_pay);
     // RUN_TEST(testPoint_Constructor);
     // RUN_TEST(testPoint_isEmpty);
     // RUN_TEST(testPoint_hasNegative);
