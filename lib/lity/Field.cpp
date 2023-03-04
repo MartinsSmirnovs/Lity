@@ -85,8 +85,14 @@ auto Field::closest(const TypeList& list, int value) -> TypeList::const_iterator
         return lowerBoundIterator;
     }
 
-    const int previousValue = *(lowerBoundIterator - 1);
-    const int currentValue  = *lowerBoundIterator;
+    int previousValue = 0;
+    if (lowerBoundIterator != list.begin()) {
+        previousValue = *(lowerBoundIterator - 1);
+    } else {
+        previousValue = *(lowerBoundIterator);
+    }
+
+    const int currentValue = *lowerBoundIterator;
 
     if (abs(value - previousValue) < abs(value - currentValue)) {
         return lowerBoundIterator - 1;
