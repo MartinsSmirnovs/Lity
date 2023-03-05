@@ -2,6 +2,7 @@
 
 #include "Animation.h"
 #include "Field.h"
+#include "FigureDescription.h"
 #include "LityConfig.h"
 #include "Point.h"
 #include <functional>
@@ -19,14 +20,7 @@ public:
 
 protected:
     using Building = Field::Building;
-    struct Description {
-        Point center;
-        std::vector<std::vector<Field::Type>> colorMask;
-        std::vector<std::vector<Field::Type>> paymentMask;
-        std::vector<std::vector<Building>> buildingMask;
-        std::vector<std::vector<bool>> upgradeMask;
-        std::vector<std::vector<Animation::Type>> animationMask;
-    } description;
+    FigureDescription description;
 
     bool checkColorMask(const Fields& fields, const FieldPoint& fieldPoint) const;
     bool checkBuildingMask(const Fields& fields, const FieldPoint& fieldPoint) const;
