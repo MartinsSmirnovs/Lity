@@ -68,14 +68,12 @@ void MainWindowManager::automaticProcess(int fieldId) {
 
         fieldsDescriptors.push_back(descriptor);
 
-        fieldsCurrent[descriptor.id] = field.getType();
+        // We store fields in MainWindowManager only to find difference between
+        // readings and in doing so emulate what would happen on electronic field
+        fieldsCurrent[descriptor.id] = Field::Type::none;
     }
 
     emit updateFieldsEvent(fieldsDescriptors);
-
-    // On next move the figure gets moved to another field and previous
-    // field becomes none
-    fieldsCurrent[fieldId] = Field::Type::none;
 
     fieldsPrevious = fieldsCurrent;
 }
