@@ -1,0 +1,81 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 21,
+      "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "Common",
+            "hidden": true,
+            "cacheVariables": {
+                "Qt5Core_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Core",
+                "Qt5Gui_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Gui",
+                "Qt5Widgets_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5Widgets",
+                "Qt5_DIR": "C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5",
+                "QT_QMAKE_EXECUTABLE": "C:/Qt/5.15.2/msvc2019_64/bin/qmake.exe",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_PREFIX_PATH": "C:/Qt/5.15.2/msvc2019_64",
+                "CMAKE_C_COMPILER": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/HostX64/x64/cl.exe",
+                "CMAKE_CXX_COMPILER": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/HostX64/x64/cl.exe",
+                "CMAKE_PROJECT_INCLUDE_BEFORE": "C:/Qt/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "Release",
+            "displayName": "Release",
+            "description": "Release configuration",
+            "inherits": [ "Common" ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            },
+            "binaryDir": "${sourceDir}/build/Release"
+        },
+        {
+            "name": "Debug",
+            "displayName": "Debug",
+            "description": "Debug configuration",
+            "inherits": [ "Common" ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "binaryDir": "${sourceDir}/build/Debug"
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Common",
+            "hidden": true,
+            "targets": [
+                "all",
+                "lity_desktop_app",
+                "lity_desktop_app_deploy",
+                "testing"
+            ]
+        },
+        {
+            "name": "Release build",
+            "configurePreset": "Release",
+            "inherits": [ "Common" ]
+
+        }
+        ,
+        {
+            "name": "Debug build",
+            "configurePreset": "Debug",
+            "inherits": [ "Common" ]
+
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "lity_esp32_resistive_x86_test",
+            "configurePreset": "Release",
+            "output": {
+                "verbosity": "verbose"
+            }
+        }
+    ]
+}

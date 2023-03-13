@@ -1,20 +1,55 @@
 #include "MainWindow.h"
-#include "DynamicSettings.h"
 #include "SettingsWindow.h"
 #include "ui_MainWindow.h"
 #include <QButtonGroup>
-#include <QDebug>
-#include <lity/Converter.h>
-#include <lity/Differ.h>
 
 MainWindow::MainWindow(QWidget* parent)
 : QMainWindow(parent),
-  ui(new Ui::MainWindow) {
+  ui(new Ui::MainWindow),
+  manager() {
     ui->setupUi(this);
 
     setWindowTitle("Lity Desktop");
 
+    initializeFields();
+    initializeColorSelectionPanel();
+    initializeBuildingSelectionPanel();
+
+    connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::onOpenSettings);
+
+    connect(&manager, &MainWindowManager::updateFieldsEvent, this, &MainWindow::onFieldsUpdate);
+}
+
+void MainWindow::onFieldsUpdate(const FieldDescriptorList& descriptionList) {
+    for (const auto& description : descriptionList) {
+        const int id      = description.id;
+        auto& buttonField = *groupFields->button(id);
+        buttonField.setText(description.text);
+        setColor(buttonField, description.color);
+    }
+}
+
+void MainWindow::initializeColorSelectionPanel() {
     groupColors = new QButtonGroup(this);
+
+    groupColors->addButton(ui->radioBlack);
+    groupColors->addButton(ui->radioBlue);
+    groupColors->addButton(ui->radioGreen);
+    groupColors->addButton(ui->radioPurple);
+    groupColors->addButton(ui->radioRed);
+    groupColors->addButton(ui->radioWhite);
+
+    groupColors->setId(ui->radioBlack, Field::black);
+    groupColors->setId(ui->radioBlue, Field::blue);
+    groupColors->setId(ui->radioGreen, Field::green);
+    groupColors->setId(ui->radioPurple, Field::purple);
+    groupColors->setId(ui->radioRed, Field::red);
+    groupColors->setId(ui->radioWhite, Field::white);
+
+    connect(groupColors, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonColorClicked);
+}
+
+void MainWindow::initializeFields() {
     groupFields = new QButtonGroup(this);
 
     groupFields->setExclusive(false);
@@ -34,44 +69,23 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(groupFields, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonFieldClicked);
 
-    groupColors->addButton(ui->radioBlack);
-    groupColors->addButton(ui->radioBlue);
-    groupColors->addButton(ui->radioGreen);
-    groupColors->addButton(ui->radioPurple);
-    groupColors->addButton(ui->radioRed);
-    groupColors->addButton(ui->radioWhite);
-
-    groupColors->setId(ui->radioBlack, Field::black);
-    groupColors->setId(ui->radioBlue, Field::blue);
-    groupColors->setId(ui->radioGreen, Field::green);
-    groupColors->setId(ui->radioPurple, Field::purple);
-    groupColors->setId(ui->radioRed, Field::red);
-    groupColors->setId(ui->radioWhite, Field::white);
-
-    connect(groupColors, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonColorClicked);
-
     connect(ui->clearButton, &QPushButton::clicked, this, &MainWindow::clearFields);
     clearFields();
-
-    connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::onOpenSettings);
-
-    setupBuildingMenu();
 }
 
 void MainWindow::clearFields() {
-    for (int i = 0; i < fieldsCount; i++) {
+    manager.reset();
+
+    const int buttonsCount = groupFields->buttons().size();
+    for (int i = 0; i < buttonsCount; i++) {
         setColor(*groupFields->button(i), RGB(0, 0, 0));
-        setText(*groupFields->button(i), Field::Building::levelNone);
+        groupFields->button(i)->setText("");
     }
-
-    fieldsPrevious.fill(Field::none);
-    fieldsCurrent = fieldsPrevious;
-
-    logic = LityLogic();
 }
 
 void MainWindow::onButtonColorClicked(QAbstractButton* button) {
-    currentType = static_cast<Field::Type>(groupColors->id(button));
+    const auto type = static_cast<Field::Type>(groupColors->id(button));
+    manager.setType(type);
 }
 
 Field::Type toFieldType(const RGB& color) {
@@ -102,67 +116,9 @@ Field::Type toFieldType(const RGB& color) {
     return Field::black;
 }
 
-void MainWindow::automaticProcess(QAbstractButton& button) {
-    const auto rawId     = groupFields->id(&button);
-    fieldsCurrent[rawId] = currentType;
-
-    // Return if there is no diff between readings
-    if (Differ::equal(fieldsPrevious, fieldsCurrent)) {
-        return;
-    }
-
-    LityLogic::AnimationList animations;
-    try {
-        animations = logic.process(fieldsPrevious, fieldsCurrent);
-    } catch (std::exception& exception) {
-        qDebug() << exception.what();
-    }
-
-    for (const auto& animation : animations) {
-        const auto point = animation->getPoint();
-        const auto id    = Converter::toId(point, sideSize);
-        auto& button     = *groupFields->button(id);
-
-        const auto& color = animation->getTarget();
-
-        setColor(button, color);
-
-        // Update our local fields buffer so it would not get surprises
-        // on next read
-        fieldsCurrent[id] = toFieldType(color);
-    }
-
-    for (const auto& point : logic.getUpdatedPoints()) {
-        const auto id = Converter::toId(point, sideSize);
-        auto& button  = *groupFields->button(id);
-
-        const auto y = point.y;
-        const auto x = point.x;
-
-        const auto& field = logic.getFields()[y][x];
-        setText(button, field.getBuilding());
-    }
-
-    animations.clear();
-
-    fieldsPrevious = fieldsCurrent;
-}
-
-void MainWindow::manualProcess(QAbstractButton& button) {
-    const auto& color = Field::getColor(currentType);
-    setColor(button, color);
-    setText(button, currentBuilding);
-}
-
 void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
-    const auto settings    = DynamicSettings::instance();
-    const bool isAutomatic = settings->getAutomaticPayment();
-
-    if (isAutomatic) {
-        automaticProcess(*button);
-    } else {
-        manualProcess(*button);
-    }
+    const int id = groupFields->id(button);
+    manager.buttonFieldClicked(id);
 }
 
 QString toColorName(const RGB& color) {
@@ -197,27 +153,6 @@ void MainWindow::setColor(QAbstractButton& button, RGB color) const {
     button.setStyleSheet("background-color:" + toColorName(color));
 }
 
-void MainWindow::setText(QAbstractButton& button, Field::Building building) const {
-    QString buttonText;
-
-    switch (building) {
-        case Field::Building::levelNone: {
-            buttonText = "";
-        } break;
-        case Field::Building::levelFirst: {
-            buttonText = "I";
-        } break;
-        case Field::Building::levelSecond: {
-            buttonText = "II";
-        } break;
-        case Field::Building::levelThird: {
-            buttonText = "III";
-        } break;
-    }
-
-    button.setText(buttonText);
-}
-
 void MainWindow::onOpenSettings() {
     auto settingsWindow = new SettingsWindow(this);
     settingsWindow->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
@@ -227,12 +162,12 @@ void MainWindow::onOpenSettings() {
 
 void MainWindow::onSettingsWindowClosed(int result) {
     if (result == QDialog::Accepted) {
-        displayBuildingsMenu();
+        displayBuildingSelectionMenu();
         clearFields();
     }
 }
 
-void MainWindow::setupBuildingMenu() {
+void MainWindow::initializeBuildingSelectionPanel() {
     groupBuildings = new QButtonGroup(this);
 
     groupBuildings->addButton(ui->levelNone, static_cast<int>(Field::Building::levelNone));
@@ -242,17 +177,16 @@ void MainWindow::setupBuildingMenu() {
 
     connect(groupBuildings, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonBuildingClicked);
 
-    displayBuildingsMenu();
+    displayBuildingSelectionMenu();
 }
 
 void MainWindow::onButtonBuildingClicked(QAbstractButton* button) {
-    currentBuilding = static_cast<Field::Building>(groupBuildings->id(button));
+    const auto building = static_cast<Field::Building>(groupBuildings->id(button));
+    manager.setBuildingType(building);
 }
 
-void MainWindow::displayBuildingsMenu() {
-    const auto settings = DynamicSettings::instance();
-
-    if (settings->getAutomaticPayment()) {
+void MainWindow::displayBuildingSelectionMenu() {
+    if (manager.isAutomaticPaymentEnabled()) {
         ui->levelContainer->hide();
     } else {
         ui->levelContainer->show();

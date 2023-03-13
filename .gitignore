@@ -1,7 +1,7 @@
 .pio
 CMakeLists.txt.user
-build/*
-ESP32_Resistive/.vscode/c_cpp_properties.json
-ESP32_Resistive/.vscode/extensions.json
-ESP32_Resistive/.vscode/launch.json
-.vscode/c_cpp_properties.json
+build
+ESP32_Resistive/.pio
+Nano_Resistive
+compile_commands.json
+.cache
