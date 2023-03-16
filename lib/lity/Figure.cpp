@@ -1,6 +1,6 @@
 #include "Figure.h"
 
-bool Figure::find(const Fields& fields, const FieldPoint& fieldPoint) const {
+bool Figure::find(const Fields& fields, const FieldPoint& fieldPoint) {
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
@@ -19,7 +19,7 @@ bool Figure::find(const Fields& fields, const FieldPoint& fieldPoint) const {
     return true;
 }
 
-auto Figure::apply(Fields& fields, const FieldPoint& fieldPoint) const -> AnimationList {
+auto Figure::apply(Fields& fields, const FieldPoint& fieldPoint) -> AnimationList {
     applyPaymentMask(fields, fieldPoint);
     applyUpgradeMask(fields, fieldPoint);
 
@@ -35,10 +35,26 @@ bool Figure::checkColorMask(const Fields& fields, const FieldPoint& fieldPoint) 
             return true;
         }
 
+        // Match any enemy color
+        if (maskValue == Field::Type::enemy &&
+            fields[y][x].getType() != field.getType() &&
+            fields[y][x].getType() != Field::Type::black &&
+            fields[y][x].getType() != Field::Type::white) {
+            return true;
+        }
+
+        // Do not match if enemy mask is at target position
+        if (maskValue == Field::Type::enemy &&
+            fields[y][x].getType() == field.getType()) {
+            return false;
+        }
+
+        // Match current field
         if (point.x == x && point.y == y) {
             return true;
         }
 
+        // Match existing field at position with current field
         if (fields[y][x].getType() == field.getType()) {
             return true;
         }

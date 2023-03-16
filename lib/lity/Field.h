@@ -6,8 +6,7 @@
 
 class Field {
 public:
-    enum Type
-    {
+    enum Type {
         white  = 0,
         blue   = 738,
         red    = 1540,
@@ -15,12 +14,12 @@ public:
         purple = 3276,
         black  = 4076,
         none   = 4095,
-        any,   // special case to indicate any of the colors
-        target // special case to indicate color in context
+        any,    // special case to indicate any of the colors
+        target, // special case to indicate color in context
+        enemy   // special case to indicate all other player colors instead of target
     };
 
-    enum class Building
-    {
+    enum class Building {
         levelAny, // special case to indicate any of the buildings
         levelNone,
         levelFirst,

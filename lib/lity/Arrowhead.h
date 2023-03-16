@@ -4,8 +4,16 @@
 #include "FigureDescription.h"
 
 class Arrowhead : public Figure {
-    using Direction = FigureDescription::Direction;
 public:
     Arrowhead();
-    Arrowhead(Direction direction);
+    bool find(const Fields& fields, const FieldPoint& fieldPoint) override;
+    AnimationList apply(Fields& fields, const FieldPoint& fieldPoint) override;
+
+private:
+    using Direction = FigureDescription::Direction;
+
+    bool onlyOneFound        = false;
+    Direction foundDirection = Direction::top;
+
+    void searchByRotation(Direction direction, const Fields& fields, const FieldPoint& fieldPoint);
 };
