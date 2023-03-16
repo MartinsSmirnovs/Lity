@@ -26,18 +26,9 @@ std::shared_ptr<Figure> FigureFactory::yield() {
         //     return std::make_shared<Javelin>();
         // } break;
         case 4: {
-            return std::make_shared<Arrowhead>(Direction::top);
+            return std::make_shared<Arrowhead>();
         } break;
         case 5: {
-            return std::make_shared<Arrowhead>(Direction::left);
-        } break;
-        case 6: {
-            return std::make_shared<Arrowhead>(Direction::right);
-        } break;
-        case 7: {
-            return std::make_shared<Arrowhead>(Direction::bottom);
-        } break;
-        case 8: {
             return std::make_shared<Dot>();
         } break;
         default: {

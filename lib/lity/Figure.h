@@ -15,8 +15,8 @@ class Figure {
 public:
     using AnimationList = std::vector<AnimationPoint>;
 
-    bool find(const Fields& fields, const FieldPoint& fieldPoint) const;
-    AnimationList apply(Fields& fields, const FieldPoint& fieldPoint) const;
+    virtual bool find(const Fields& fields, const FieldPoint& fieldPoint);
+    virtual AnimationList apply(Fields& fields, const FieldPoint& fieldPoint);
 
 protected:
     using Building = Field::Building;
