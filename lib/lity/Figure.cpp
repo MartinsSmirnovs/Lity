@@ -43,6 +43,12 @@ bool Figure::checkColorMask(const Fields& fields, const FieldPoint& fieldPoint) 
             return true;
         }
 
+        // Do not match if enemy mask is at target position
+        if (maskValue == Field::Type::enemy &&
+            fields[y][x].getType() == field.getType()) {
+            return false;
+        }
+
         // Match current field
         if (point.x == x && point.y == y) {
             return true;
