@@ -42,6 +42,11 @@ protected:
         for (int y = startPoint.y; y < startPoint.y + height; y++) {
             for (int x = startPoint.x; x < startPoint.x + width; x++) {
                 const auto maskValue = mask[y - startPoint.y][x - startPoint.x];
+                // Out of boundaries check
+                if (y < 0 || y >= sideSize || x < 0 || x >= sideSize) {
+                    return false;
+                }
+
                 if (!condition(x, y, maskValue)) {
                     return false;
                 }
