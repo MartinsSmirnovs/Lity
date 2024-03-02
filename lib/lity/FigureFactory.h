@@ -3,9 +3,10 @@
 #include "Figure.h"
 #include <memory>
 
-class FigureFactory {
+class FigureFactory
+{
 public:
-    std::shared_ptr<Figure> yield();
+    std::shared_ptr< Figure > yield();
     bool yieldable();
 
 private:

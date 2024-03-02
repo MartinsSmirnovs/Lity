@@ -1,7 +1,8 @@
 #include "Dot.h"
 
 Dot::Dot()
-: Figure() {
+: Figure()
+{
     description.colorMask = {
         { Field::Type::target }
     };

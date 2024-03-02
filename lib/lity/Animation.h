@@ -3,20 +3,21 @@
 #include "Point.h"
 #include "RGB.h"
 
-class Animation {
+class Animation
+{
 public:
     // Value of Type is it's animation interval
     enum Type
     {
-        none       = 0,   // none
+        none = 0,         // none
         appearance = 250, // fade
-        payment    = 300  // blink
+        payment = 300     // blink
     };
 
-    Animation(const RGB& colorCurrent, const RGB& colorTarget, const Point& point);
+    Animation( const RGB& colorCurrent, const RGB& colorTarget, const Point& point );
 
     // Returns true if target value is not reached yet, false otherwise
-    virtual bool update(unsigned long currentTime) = 0;
+    virtual bool update( unsigned long currentTime ) = 0;
 
     const Point& getPoint() const;
     const RGB& getColor() const;

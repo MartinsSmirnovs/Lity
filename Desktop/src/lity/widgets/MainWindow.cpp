@@ -3,196 +3,230 @@
 #include "ui_MainWindow.h"
 #include <QButtonGroup>
 
-MainWindow::MainWindow(QWidget* parent)
-: QMainWindow(parent),
-  ui(new Ui::MainWindow),
-  manager() {
-    ui->setupUi(this);
+MainWindow::MainWindow( QWidget* parent )
+: QMainWindow( parent ),
+  ui( new Ui::MainWindow ),
+  manager()
+{
+    ui->setupUi( this );
 
-    setWindowTitle("Lity Desktop");
+    setWindowTitle( "Lity Desktop" );
 
     initializeFields();
     initializeColorSelectionPanel();
     initializeBuildingSelectionPanel();
 
-    connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::onOpenSettings);
+    connect( ui->actionSettings, &QAction::triggered, this, &MainWindow::onOpenSettings );
 
-    connect(&manager, &MainWindowManager::updateFieldsEvent, this, &MainWindow::onFieldsUpdate);
+    connect( &manager, &MainWindowManager::updateFieldsEvent, this, &MainWindow::onFieldsUpdate );
 }
 
-void MainWindow::onFieldsUpdate(const FieldDescriptorList& descriptionList) {
-    for (const auto& description : descriptionList) {
-        const int id      = description.id;
-        auto& buttonField = *groupFields->button(id);
-        buttonField.setText(description.text);
-        setColor(buttonField, description.color);
+void MainWindow::onFieldsUpdate( const FieldDescriptorList& descriptionList )
+{
+    for ( const auto& description : descriptionList )
+    {
+        const int id = description.id;
+        auto& buttonField = *groupFields->button( id );
+        buttonField.setText( description.text );
+        setColor( buttonField, description.color );
     }
 }
 
-void MainWindow::initializeColorSelectionPanel() {
-    groupColors = new QButtonGroup(this);
+void MainWindow::initializeColorSelectionPanel()
+{
+    groupColors = new QButtonGroup( this );
 
-    groupColors->addButton(ui->radioBlack);
-    groupColors->addButton(ui->radioBlue);
-    groupColors->addButton(ui->radioGreen);
-    groupColors->addButton(ui->radioPurple);
-    groupColors->addButton(ui->radioRed);
-    groupColors->addButton(ui->radioWhite);
+    groupColors->addButton( ui->radioBlack );
+    groupColors->addButton( ui->radioBlue );
+    groupColors->addButton( ui->radioGreen );
+    groupColors->addButton( ui->radioPurple );
+    groupColors->addButton( ui->radioRed );
+    groupColors->addButton( ui->radioWhite );
 
-    groupColors->setId(ui->radioBlack, Field::black);
-    groupColors->setId(ui->radioBlue, Field::blue);
-    groupColors->setId(ui->radioGreen, Field::green);
-    groupColors->setId(ui->radioPurple, Field::purple);
-    groupColors->setId(ui->radioRed, Field::red);
-    groupColors->setId(ui->radioWhite, Field::white);
+    groupColors->setId( ui->radioBlack, Field::black );
+    groupColors->setId( ui->radioBlue, Field::blue );
+    groupColors->setId( ui->radioGreen, Field::green );
+    groupColors->setId( ui->radioPurple, Field::purple );
+    groupColors->setId( ui->radioRed, Field::red );
+    groupColors->setId( ui->radioWhite, Field::white );
 
-    connect(groupColors, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonColorClicked);
+    connect( groupColors, qOverload< QAbstractButton* >( &QButtonGroup::buttonClicked ), this, &MainWindow::onButtonColorClicked );
 }
 
-void MainWindow::initializeFields() {
-    groupFields = new QButtonGroup(this);
+void MainWindow::initializeFields()
+{
+    groupFields = new QButtonGroup( this );
 
-    groupFields->setExclusive(false);
+    groupFields->setExclusive( false );
 
-    const QSize buttonSize = QSize(60, 60);
-    for (int i = 0; i < sideSize; i++) {
-        for (int j = 0; j < sideSize; j++) {
-            auto button = new QPushButton(this);
-            button->setFixedSize(buttonSize);
+    const QSize buttonSize = QSize( 60, 60 );
+    for ( int i = 0; i < sideSize; i++ )
+    {
+        for ( int j = 0; j < sideSize; j++ )
+        {
+            auto button = new QPushButton( this );
+            button->setFixedSize( buttonSize );
 
-            groupFields->addButton(button);
-            groupFields->setId(button, i * sideSize + j);
+            groupFields->addButton( button );
+            groupFields->setId( button, i * sideSize + j );
 
-            ui->fieldsContainer->addWidget(button, j, i);
+            ui->fieldsContainer->addWidget( button, j, i );
         }
     }
 
-    connect(groupFields, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonFieldClicked);
+    connect( groupFields, qOverload< QAbstractButton* >( &QButtonGroup::buttonClicked ), this, &MainWindow::onButtonFieldClicked );
 
-    connect(ui->clearButton, &QPushButton::clicked, this, &MainWindow::clearFields);
+    connect( ui->clearButton, &QPushButton::clicked, this, &MainWindow::clearFields );
     clearFields();
 }
 
-void MainWindow::clearFields() {
+void MainWindow::clearFields()
+{
     manager.reset();
 
     const int buttonsCount = groupFields->buttons().size();
-    for (int i = 0; i < buttonsCount; i++) {
-        setColor(*groupFields->button(i), RGB(0, 0, 0));
-        groupFields->button(i)->setText("");
+    for ( int i = 0; i < buttonsCount; i++ )
+    {
+        setColor( *groupFields->button( i ), RGB( 0, 0, 0 ) );
+        groupFields->button( i )->setText( "" );
     }
 }
 
-void MainWindow::onButtonColorClicked(QAbstractButton* button) {
-    const auto type = static_cast<Field::Type>(groupColors->id(button));
-    manager.setType(type);
+void MainWindow::onButtonColorClicked( QAbstractButton* button )
+{
+    const auto type = static_cast< Field::Type >( groupColors->id( button ) );
+    manager.setType( type );
 }
 
-Field::Type toFieldType(const RGB& color) {
-    const auto red   = color.red;
+Field::Type toFieldType( const RGB& color )
+{
+    const auto red = color.red;
     const auto green = color.green;
-    const auto blue  = color.blue;
+    const auto blue = color.blue;
 
-    if (red == 255 && green == 0 && blue == 0) {
+    if ( red == 255 && green == 0 && blue == 0 )
+    {
         return Field::red;
     }
 
-    if (red == 0 && green == 255 && blue == 0) {
+    if ( red == 0 && green == 255 && blue == 0 )
+    {
         return Field::green;
     }
 
-    if (red == 0 && green == 0 && blue == 255) {
+    if ( red == 0 && green == 0 && blue == 255 )
+    {
         return Field::blue;
     }
 
-    if (red == 255 && green == 0 && blue == 255) {
+    if ( red == 255 && green == 0 && blue == 255 )
+    {
         return Field::purple;
     }
 
-    if (red == 255 && green == 255 && blue == 255) {
+    if ( red == 255 && green == 255 && blue == 255 )
+    {
         return Field::white;
     }
 
     return Field::black;
 }
 
-void MainWindow::onButtonFieldClicked(QAbstractButton* button) {
-    const int id = groupFields->id(button);
-    manager.buttonFieldClicked(id);
+void MainWindow::onButtonFieldClicked( QAbstractButton* button )
+{
+    const int id = groupFields->id( button );
+    manager.buttonFieldClicked( id );
 }
 
-QString toColorName(const RGB& color) {
-    const auto red   = color.red;
+QString toColorName( const RGB& color )
+{
+    const auto red = color.red;
     const auto green = color.green;
-    const auto blue  = color.blue;
+    const auto blue = color.blue;
 
-    if (red == 255 && green == 0 && blue == 0) {
+    if ( red == 255 && green == 0 && blue == 0 )
+    {
         return "red";
     }
 
-    if (red == 0 && green == 255 && blue == 0) {
+    if ( red == 0 && green == 255 && blue == 0 )
+    {
         return "green";
     }
 
-    if (red == 0 && green == 0 && blue == 255) {
+    if ( red == 0 && green == 0 && blue == 255 )
+    {
         return "blue";
     }
 
-    if (red == 255 && green == 0 && blue == 255) {
+    if ( red == 255 && green == 0 && blue == 255 )
+    {
         return "purple";
     }
 
-    if (red == 255 && green == 255 && blue == 255) {
+    if ( red == 255 && green == 255 && blue == 255 )
+    {
         return "white";
     }
 
     return "black";
 }
 
-void MainWindow::setColor(QAbstractButton& button, RGB color) const {
-    button.setStyleSheet("background-color:" + toColorName(color));
+void MainWindow::setColor( QAbstractButton& button, RGB color ) const
+{
+    button.setStyleSheet( "background-color:" + toColorName( color ) );
 }
 
-void MainWindow::onOpenSettings() {
-    auto settingsWindow = new SettingsWindow(this);
-    settingsWindow->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
+void MainWindow::onOpenSettings()
+{
+    auto settingsWindow = new SettingsWindow( this );
+    settingsWindow->setAttribute( Qt::WidgetAttribute::WA_DeleteOnClose );
     settingsWindow->show();
-    connect(settingsWindow, &QDialog::finished, this, &MainWindow::onSettingsWindowClosed);
+    connect( settingsWindow, &QDialog::finished, this, &MainWindow::onSettingsWindowClosed );
 }
 
-void MainWindow::onSettingsWindowClosed(int result) {
-    if (result == QDialog::Accepted) {
+void MainWindow::onSettingsWindowClosed( int result )
+{
+    if ( result == QDialog::Accepted )
+    {
         displayBuildingSelectionMenu();
         clearFields();
     }
 }
 
-void MainWindow::initializeBuildingSelectionPanel() {
-    groupBuildings = new QButtonGroup(this);
+void MainWindow::initializeBuildingSelectionPanel()
+{
+    groupBuildings = new QButtonGroup( this );
 
-    groupBuildings->addButton(ui->levelNone, static_cast<int>(Field::Building::levelNone));
-    groupBuildings->addButton(ui->levelOne, static_cast<int>(Field::Building::levelFirst));
-    groupBuildings->addButton(ui->levelTwo, static_cast<int>(Field::Building::levelSecond));
-    groupBuildings->addButton(ui->levelThree, static_cast<int>(Field::Building::levelThird));
+    groupBuildings->addButton( ui->levelNone, static_cast< int >( Field::Building::levelNone ) );
+    groupBuildings->addButton( ui->levelOne, static_cast< int >( Field::Building::levelFirst ) );
+    groupBuildings->addButton( ui->levelTwo, static_cast< int >( Field::Building::levelSecond ) );
+    groupBuildings->addButton( ui->levelThree, static_cast< int >( Field::Building::levelThird ) );
 
-    connect(groupBuildings, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &MainWindow::onButtonBuildingClicked);
+    connect( groupBuildings, qOverload< QAbstractButton* >( &QButtonGroup::buttonClicked ), this, &MainWindow::onButtonBuildingClicked );
 
     displayBuildingSelectionMenu();
 }
 
-void MainWindow::onButtonBuildingClicked(QAbstractButton* button) {
-    const auto building = static_cast<Field::Building>(groupBuildings->id(button));
-    manager.setBuildingType(building);
+void MainWindow::onButtonBuildingClicked( QAbstractButton* button )
+{
+    const auto building = static_cast< Field::Building >( groupBuildings->id( button ) );
+    manager.setBuildingType( building );
 }
 
-void MainWindow::displayBuildingSelectionMenu() {
-    if (manager.isAutomaticPaymentEnabled()) {
+void MainWindow::displayBuildingSelectionMenu()
+{
+    if ( manager.isAutomaticPaymentEnabled() )
+    {
         ui->levelContainer->hide();
-    } else {
+    }
+    else
+    {
         ui->levelContainer->show();
     }
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui;
 }

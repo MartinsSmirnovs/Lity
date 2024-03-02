@@ -3,12 +3,13 @@
 #include "RGB.h"
 #include <Adafruit_NeoPixel.h>
 
-class PixelDriver {
+class PixelDriver
+{
 public:
     PixelDriver();
 
     void setup();
-    void setColor(int pixel, const RGB& color);
+    void setColor( int pixel, const RGB& color );
 
 private:
     Adafruit_NeoPixel strip;

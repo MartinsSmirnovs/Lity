@@ -1,13 +1,16 @@
 #include "Tests.h"
 #include <unity.h>
 
-void setUp() {
+void setUp()
+{
 }
 
-void tearDown() {
+void tearDown()
+{
 }
 
-int main(int argc, char** argv) {
+int main( int argc, char** argv )
+{
     UNITY_BEGIN();
     // RUN_TEST(testDiffer_diff);
     // RUN_TEST(testDiffer_areAllElementsSame);
@@ -26,9 +29,9 @@ int main(int argc, char** argv) {
     // RUN_TEST(testPoint_ConstructorEqualsNot);
     // RUN_TEST(testFade_Update);
     // RUN_TEST(testBlink_Update);
-    RUN_TEST(testCross_find);
-    RUN_TEST(testCross_apply);
-    RUN_TEST(testSquare_find);
-    RUN_TEST(testSquare_apply);
+    RUN_TEST( testCross_find );
+    RUN_TEST( testCross_apply );
+    RUN_TEST( testSquare_find );
+    RUN_TEST( testSquare_apply );
     UNITY_END();
 }

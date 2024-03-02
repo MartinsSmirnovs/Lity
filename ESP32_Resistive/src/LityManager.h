@@ -5,7 +5,8 @@
 #include "PixelDriver.h"
 #include "Waiter.h"
 
-class LityManager {
+class LityManager
+{
 public:
     LityManager();
 
@@ -23,9 +24,9 @@ private:
     FieldsRaw rawFieldsPrevious;
 
     void updatePreviousFields();
-    void displayColor(const RGB& color, const Point& point);
+    void displayColor( const RGB& color, const Point& point );
 
-    void doAnimations(LityLogic::AnimationList& animationList);
+    void doAnimations( LityLogic::AnimationList& animationList );
 
-    int toId(const Point& point) const;
+    int toId( const Point& point ) const;
 };

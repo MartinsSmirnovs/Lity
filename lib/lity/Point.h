@@ -1,9 +1,10 @@
 #pragma once
 
-class Point {
+class Point
+{
 public:
     Point() = default;
-    Point(int y, int x);
+    Point( int y, int x );
 
     constexpr static int empty = -1;
 
@@ -13,9 +14,9 @@ public:
     bool isEmpty() const;
     bool hasNegative() const;
 
-    Point operator+(const Point& first) const;
-    Point operator-(const Point& first) const;
+    Point operator+( const Point& first ) const;
+    Point operator-( const Point& first ) const;
 
-    bool operator==(const Point& first) const;
-    bool operator!=(const Point& first) const;
+    bool operator==( const Point& first ) const;
+    bool operator!=( const Point& first ) const;
 };

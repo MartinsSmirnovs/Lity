@@ -1,7 +1,8 @@
 #include "Square.h"
 
 Square::Square()
-: Figure() {
+: Figure()
+{
     // clang-format off
     description.colorMask = {
         { Field::Type::target, Field::target, Field::Type::target },

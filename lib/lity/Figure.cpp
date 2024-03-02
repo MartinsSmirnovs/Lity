@@ -1,36 +1,43 @@
 #include "Figure.h"
 
-bool Figure::find(const Fields& fields, const FieldPoint& fieldPoint) {
+bool Figure::find( const Fields& fields, const FieldPoint& fieldPoint )
+{
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
-    if (!checkBoundaries(fieldPoint, description.colorMask, description.center)) {
+    if ( !checkBoundaries( fieldPoint, description.colorMask, description.center ) )
+    {
         return false;
     }
 
-    if (!checkColorMask(fields, fieldPoint)) {
+    if ( !checkColorMask( fields, fieldPoint ) )
+    {
         return false;
     }
 
-    if (!checkBuildingMask(fields, fieldPoint)) {
+    if ( !checkBuildingMask( fields, fieldPoint ) )
+    {
         return false;
     }
 
     return true;
 }
 
-auto Figure::apply(Fields& fields, const FieldPoint& fieldPoint) -> AnimationList {
-    applyPaymentMask(fields, fieldPoint);
-    applyUpgradeMask(fields, fieldPoint);
+auto Figure::apply( Fields& fields, const FieldPoint& fieldPoint ) -> AnimationList
+{
+    applyPaymentMask( fields, fieldPoint );
+    applyUpgradeMask( fields, fieldPoint );
 
-    return createAnimationList(fieldPoint);
+    return createAnimationList( fieldPoint );
 }
 
-bool Figure::checkColorMask(const Fields& fields, const FieldPoint& fieldPoint) const {
+bool Figure::checkColorMask( const Fields& fields, const FieldPoint& fieldPoint ) const
+{
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
-    return checkMask(fieldPoint, description.colorMask, description.center, [&](int x, int y, Field::Type maskValue) {
+    return checkMask( fieldPoint, description.colorMask, description.center, [ & ]( int x, int y, Field::Type maskValue )
+                      {
         if (maskValue == Field::Type::any) {
             return true;
         }
@@ -59,15 +66,16 @@ bool Figure::checkColorMask(const Fields& fields, const FieldPoint& fieldPoint) 
             return true;
         }
 
-        return false;
-    });
+        return false; } );
 }
 
-bool Figure::checkBuildingMask(const Fields& fields, const FieldPoint& fieldPoint) const {
+bool Figure::checkBuildingMask( const Fields& fields, const FieldPoint& fieldPoint ) const
+{
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
-    return checkMask(fieldPoint, description.buildingMask, description.center, [&](int x, int y, Building maskValue) {
+    return checkMask( fieldPoint, description.buildingMask, description.center, [ & ]( int x, int y, Building maskValue )
+                      {
         if (maskValue == Building::levelAny) {
             return true;
         }
@@ -76,26 +84,28 @@ bool Figure::checkBuildingMask(const Fields& fields, const FieldPoint& fieldPoin
             return true;
         }
 
-        return false;
-    });
+        return false; } );
 }
 
-void Figure::applyUpgradeMask(Fields& fields, const FieldPoint& fieldPoint) const {
+void Figure::applyUpgradeMask( Fields& fields, const FieldPoint& fieldPoint ) const
+{
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
-    applyMask(fieldPoint, description.upgradeMask, description.center, [&](int x, int y, bool maskValue) {
+    applyMask( fieldPoint, description.upgradeMask, description.center, [ & ]( int x, int y, bool maskValue )
+               {
         if (maskValue) {
             fields[y][x].upgrade();
-        }
-    });
+        } } );
 }
 
-void Figure::applyPaymentMask(Fields& fields, const FieldPoint& fieldPoint) const {
+void Figure::applyPaymentMask( Fields& fields, const FieldPoint& fieldPoint ) const
+{
     const auto& field = fieldPoint.first;
     const auto& point = fieldPoint.second;
 
-    applyMask(fieldPoint, description.paymentMask, description.center, [&](int x, int y, Field::Type maskValue) {
+    applyMask( fieldPoint, description.paymentMask, description.center, [ & ]( int x, int y, Field::Type maskValue )
+               {
         if (maskValue == Field::Type::any) {
             return;
         }
@@ -105,20 +115,20 @@ void Figure::applyPaymentMask(Fields& fields, const FieldPoint& fieldPoint) cons
             return;
         }
 
-        fields[y][x].setType(maskValue);
-    });
+        fields[y][x].setType(maskValue); } );
 }
 
-auto Figure::createAnimationList(const FieldPoint& fieldPoint) const -> AnimationList {
+auto Figure::createAnimationList( const FieldPoint& fieldPoint ) const -> AnimationList
+{
     AnimationList animationList;
 
-    applyMask(fieldPoint, description.animationMask, description.center, [&](int x, int y, Animation::Type maskValue) {
+    applyMask( fieldPoint, description.animationMask, description.center, [ & ]( int x, int y, Animation::Type maskValue )
+               {
         if (maskValue == Animation::Type::none) {
             return;
         }
 
-        animationList.emplace_back(maskValue, Point(y, x));
-    });
+        animationList.emplace_back(maskValue, Point(y, x)); } );
 
     return animationList;
 }

@@ -4,22 +4,24 @@
 #include <QAbstractButton>
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class SettingsWindow;
 }
 
-class SettingsWindow : public QDialog {
+class SettingsWindow : public QDialog
+{
     Q_OBJECT
 
-public:
-    explicit SettingsWindow(QWidget* parent = nullptr);
+  public:
+    explicit SettingsWindow( QWidget* parent = nullptr );
     ~SettingsWindow();
 
-private slots:
-    void saveInput(QAbstractButton* clickedButton);
+  private slots:
+    void saveInput( QAbstractButton* clickedButton );
 
 
-private:
+  private:
     Ui::SettingsWindow* ui;
 };
 

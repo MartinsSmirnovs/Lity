@@ -2,7 +2,8 @@
 
 #include "Figure.h"
 
-class Dot : public Figure {
+class Dot : public Figure
+{
 public:
     Dot();
 };

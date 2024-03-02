@@ -8,25 +8,27 @@
 #include <lity/LityLogic.h>
 
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget* parent = nullptr);
+    explicit MainWindow( QWidget* parent = nullptr );
     ~MainWindow();
 
 public slots:
-    void onButtonFieldClicked(QAbstractButton* button);
-    void onButtonColorClicked(QAbstractButton* button);
-    void onButtonBuildingClicked(QAbstractButton* button);
+    void onButtonFieldClicked( QAbstractButton* button );
+    void onButtonColorClicked( QAbstractButton* button );
+    void onButtonBuildingClicked( QAbstractButton* button );
     void onOpenSettings();
-    void onSettingsWindowClosed(int result);
+    void onSettingsWindowClosed( int result );
     void displayBuildingSelectionMenu();
-    void onFieldsUpdate(const FieldDescriptorList& descriptionList);
+    void onFieldsUpdate( const FieldDescriptorList& descriptionList );
 
 private:
     Ui::MainWindow* ui;
@@ -37,7 +39,7 @@ private:
 
     MainWindowManager manager;
 
-    void setColor(QAbstractButton& button, RGB color) const;
+    void setColor( QAbstractButton& button, RGB color ) const;
 
     void clearFields();
 

@@ -1,7 +1,8 @@
 #include "Circle.h"
 
 Circle::Circle()
-: Figure() {
+: Figure()
+{
     // clang-format off
     description.colorMask = {
         { Field::Type::any,    Field::Type::any,    Field::target, Field::Type::any,    Field::Type::any },

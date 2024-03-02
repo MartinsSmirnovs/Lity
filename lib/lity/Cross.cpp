@@ -1,7 +1,8 @@
 #include "Cross.h"
 
 Cross::Cross()
-: Figure() {
+: Figure()
+{
     // clang-format off
     description.colorMask = {
         { Field::Type::any,    Field::target, Field::Type::any },

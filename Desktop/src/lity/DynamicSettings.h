@@ -4,21 +4,22 @@
 #include <QObject>
 #include <QSettings>
 
-class DynamicSettings : public QObject {
+class DynamicSettings : public QObject
+{
     Q_OBJECT
 public:
     DynamicSettings() = delete;
-    void operator=(const DynamicSettings&) = delete;
-    static DynamicSettings* instance(const QString& directoryPath, QObject* parent = nullptr);
+    void operator=( const DynamicSettings& ) = delete;
+    static DynamicSettings* instance( const QString& directoryPath, QObject* parent = nullptr );
     static DynamicSettings* instance();
     virtual ~DynamicSettings();
 
     bool getAutomaticPayment() const;
-    void setAutomaticPayment(bool automaticPayment);
+    void setAutomaticPayment( bool automaticPayment );
 
 private:
     static DynamicSettings* dynamicSettings;
-    DynamicSettings(const QString& directoryPath, QObject* parent = nullptr);
+    DynamicSettings( const QString& directoryPath, QObject* parent = nullptr );
 
     QSettings* settings = nullptr;
 

@@ -4,10 +4,11 @@
 #include <lity/RGB.h>
 #include <vector>
 
-struct FieldDescriptor {
+struct FieldDescriptor
+{
     QString text;
     int id;
     RGB color;
 };
 
-using FieldDescriptorList = std::vector<FieldDescriptor>;
+using FieldDescriptorList = std::vector< FieldDescriptor >;

@@ -2,7 +2,8 @@
 #include "ScopedBackup.h"
 
 Arrowhead::Arrowhead()
-: Figure() {
+: Figure()
+{
     // clang-format off
     description.colorMask = {
         { Field::Type::any,    Field::any,    Field::Type::enemy },
@@ -38,35 +39,40 @@ Arrowhead::Arrowhead()
     description.center = { 1, 1 };
 }
 
-auto Arrowhead::apply(Fields& fields, const FieldPoint& fieldPoint) -> AnimationList {
-    description.flip(foundDirection);
-    return Figure::apply(fields, fieldPoint);
+auto Arrowhead::apply( Fields& fields, const FieldPoint& fieldPoint ) -> AnimationList
+{
+    description.flip( foundDirection );
+    return Figure::apply( fields, fieldPoint );
 }
 
-bool Arrowhead::find(const Fields& fields, const FieldPoint& fieldPoint) {
-    searchByRotation(Direction::top, fields, fieldPoint);
-    searchByRotation(Direction::left, fields, fieldPoint);
-    searchByRotation(Direction::right, fields, fieldPoint);
-    searchByRotation(Direction::bottom, fields, fieldPoint);
+bool Arrowhead::find( const Fields& fields, const FieldPoint& fieldPoint )
+{
+    searchByRotation( Direction::top, fields, fieldPoint );
+    searchByRotation( Direction::left, fields, fieldPoint );
+    searchByRotation( Direction::right, fields, fieldPoint );
+    searchByRotation( Direction::bottom, fields, fieldPoint );
 
     return onlyOneFound;
 }
 
-void Arrowhead::searchByRotation(Direction direction, const Fields& fields, const FieldPoint& fieldPoint) {
+void Arrowhead::searchByRotation( Direction direction, const Fields& fields, const FieldPoint& fieldPoint )
+{
     // Preserve original description, so all of them get rotated relative to same point
-    const ScopedBackup descriptionBackup(description);
+    const ScopedBackup descriptionBackup( description );
 
-    description.flip(direction);
-    const bool found = Figure::find(fields, fieldPoint);
+    description.flip( direction );
+    const bool found = Figure::find( fields, fieldPoint );
 
     // If matched for more than one rotation
-    if (found && onlyOneFound) {
+    if ( found && onlyOneFound )
+    {
         onlyOneFound = false;
         return;
     }
 
-    if (found) {
-        onlyOneFound   = true;
+    if ( found )
+    {
+        onlyOneFound = true;
         foundDirection = direction;
     }
 }
