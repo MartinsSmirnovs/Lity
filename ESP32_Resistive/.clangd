@@ -1,0 +1,10 @@
+InlayHints:
+  Enabled: No
+
+CompileFlags:
+  Remove: [
+    -mlongcalls,
+    -fstrict-volatile-bitfields,
+    -fno-tree-switch-conversion
+  ]
+
