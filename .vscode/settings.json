@@ -1,7 +1,27 @@
 {
-    "editor.formatOnSave" : true,
-    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
     "C_Cpp.autoAddFileAssociations": false,
     "C_Cpp.intelliSenseEngine": "disabled",
-    "cmake.copyCompileCommands": "${workspaceFolder}/compile_commands.json"
+    "cmake.copyCompileCommands": "${workspaceFolder}/compile_commands.json",
+    "cmake.options.advanced": {
+        "build": {
+            "statusBarVisibility": "visible"
+        },
+        "buildTarget": {
+            "statusBarVisibility": "visible"
+        },
+        "configurePreset": {
+            "statusBarVisibility": "visible"
+        },
+        "ctest": {
+            "statusBarVisibility": "visible"
+        },
+        "debug": {
+            "statusBarVisibility": "visible"
+        },
+        "testPreset": {
+            "statusBarVisibility": "visible"
+        }
+    },
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.formatOnSave": true,
 }
