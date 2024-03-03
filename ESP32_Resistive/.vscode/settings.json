@@ -1,5 +1,11 @@
 {
     "clangd.arguments": [
-        "--query-driver=C:/Users/marti/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-*"
-    ]
+        "--query-driver=C:/Users/marti/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-*",
+        "--header-insertion=never"
+    ],
+    "clangd.fallbackFlags": [
+        "-DBUILD_ESP32",
+    ],
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.formatOnSave": true,
 }
