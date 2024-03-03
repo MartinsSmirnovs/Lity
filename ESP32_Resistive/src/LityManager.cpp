@@ -11,7 +11,7 @@ const Field& getFieldAt( const Point& point, const Fields& fields );
 
 void LityManager::setup()
 {
-    Serial.begin( 9600 );
+    Serial.begin( 115200 );
     PixelDriver::setup();
     IdleReader::setup();
 
@@ -103,6 +103,8 @@ void LityManager::doAnimations( const Fields& fieldsTarget, const Figure::Animat
 
             PixelDriver::setColor( toId( point ), color );
         }
+
+        PixelDriver::show();
     }
 }
 

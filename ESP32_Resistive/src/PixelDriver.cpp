@@ -17,7 +17,12 @@ void setup()
 void setColor( int pixel, const struct RGB& color )
 {
     leds[ pixel ].setRGB( color.red, color.green, color.blue );
+}
+
+void show()
+{
     FastLED.show();
+    FastLED.delay( 10 );
 }
 
 } // namespace PixelDriver
