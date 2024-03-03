@@ -58,7 +58,7 @@ bool Arrowhead::find( const Fields& fields, const FieldPoint& fieldPoint )
 void Arrowhead::searchByRotation( Direction direction, const Fields& fields, const FieldPoint& fieldPoint )
 {
     // Preserve original description, so all of them get rotated relative to same point
-    const ScopedBackup descriptionBackup( description );
+    const ScopedBackup< FigureDescription > descriptionBackup( description );
 
     description.flip( direction );
     const bool found = Figure::find( fields, fieldPoint );
