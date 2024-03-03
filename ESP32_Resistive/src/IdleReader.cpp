@@ -1,5 +1,6 @@
 #include "IdleReader.h"
 #include "LityConfig.h"
+#include "Waiter.h"
 #include <Arduino.h>
 #include <array>
 
@@ -192,10 +193,19 @@ void rawDebouncedRead( RawReadings& readings )
 {
     constexpr static int maxCount = 10;
 
-    std::array< int, std::tuple_size< RawReadings >{} > debounceCounter;
+    std::array< int, std::tuple_size< RawReadings >{} > debounceCounter = {};
 
     int stableReadingCount = 0;
-    auto debounceEndTime = 0;
+    unsigned long debounceEndTime = 0;
+
+    // There are two levels of debouncing. One is short, for cases when user tries to press
+    // on the field using two pads of his figure. The other is long and is meant for cases when user
+    // has successfully pressed on the field, and needs some time to remove his figure from the field
+    // to not to press on it again.
+    constexpr int debounceShort = 400;
+    constexpr int debounceLong = 2000;
+
+    static Waiter waiter( debounceLong );
 
     while ( true )
     {
@@ -211,8 +221,7 @@ void rawDebouncedRead( RawReadings& readings )
                 // If debouncing just started
                 if ( debounceEndTime == 0 )
                 {
-                    constexpr int debounceTimeMillis = 400;
-                    debounceEndTime = millis() + debounceTimeMillis;
+                    debounceEndTime = millis() + debounceShort;
                 }
             }
 
@@ -223,9 +232,12 @@ void rawDebouncedRead( RawReadings& readings )
         }
 
         // If we got 2 stable reads, debouncing succeeded
-        if ( stableReadingCount >= 2 )
+        if ( stableReadingCount == 2 )
         {
-            return;
+            if ( waiter.isReady( millis() ) )
+            {
+                return;
+            }
         }
 
         // If debounce time passed and we are still here it means that debouncing failed
@@ -235,6 +247,11 @@ void rawDebouncedRead( RawReadings& readings )
             stableReadingCount = 0;
             debounceCounter = {};
             readings.fill( 4095 );
+
+            // This will make sure that after the user takes off his figure, the whole
+            // field will be read as "empty" and will allow to perform correct search
+            // for difference between this and subsequent readings.
+            return;
         }
     }
 }
