@@ -130,7 +130,6 @@ static const std::array< std::pair< int, int >, fieldsCount > fieldDefinitions =
     { 0, 0 },   // 88 ???????????????????????
     { 0, 0 },   // 89 ???????????????????????
 
-
     { 28, 26 }, // 90
     { 30, 26 }, // 91
     { 30, 25 }, // 92
@@ -163,7 +162,6 @@ void setup()
 
 void rawRead( RawReadings& readings )
 {
-    // Serial.println( "Raw read" );
     const auto commonInPinsCount = commonInPins.size();
 
     int counter = 0;
@@ -183,15 +181,6 @@ void rawRead( RawReadings& readings )
             }
             else
             {
-                // for ( int i = 0; i < 60; i += 2 )
-                // {
-                //     char buffer[ 22 ] = {};
-                //     snprintf( buffer, 22, "%2d: %4d %2d: %4d ", i, readings[ i ], i + 1, readings[ i + 1 ] );
-                //     Serial.println( buffer );
-                // }
-                // Serial.println( "--------------------------" );
-                // delay( 2000 );
-
                 return;
             }
             counter++;
@@ -222,7 +211,6 @@ void rawDebouncedRead( RawReadings& readings )
                 // If debouncing just started
                 if ( debounceEndTime == 0 )
                 {
-                    Serial.println( "Debounce started" );
                     constexpr int debounceTimeMillis = 400;
                     debounceEndTime = millis() + debounceTimeMillis;
                 }
@@ -237,7 +225,6 @@ void rawDebouncedRead( RawReadings& readings )
         // If we got 2 stable reads, debouncing succeeded
         if ( stableReadingCount >= 2 )
         {
-            Serial.println( "Debounce ended" );
             return;
         }
 
@@ -275,18 +262,6 @@ void readUndebounced( FieldsRaw& fields )
 void convert( RawReadings& readings, FieldsRaw& fields )
 {
     static_assert( std::tuple_size< decltype( fieldDefinitions ) >{} == std::tuple_size< FieldsRaw >{}, "" );
-
-    // for ( int a = 0; a < 10; a++ )
-    // {
-    //     for ( int b = 0; b < 6; b++ )
-    //     {
-    //         Serial.print( a * 6 + b );
-    //         Serial.print( ": " );
-    //         Serial.print( readings[ a * 6 + b ] );
-    //         Serial.print( "    " );
-    //     }
-    //     Serial.println();
-    // }
 
     for ( int i = 0; i < fieldDefinitions.size(); i++ )
     {

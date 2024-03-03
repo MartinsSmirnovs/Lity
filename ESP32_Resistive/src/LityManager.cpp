@@ -1,27 +1,30 @@
 #include "LityManager.h"
+#include "AnimationFactory.h"
 #include "Converter.h"
 #include "Differ.h"
 #include "IdleReader.h"
+#include "PixelDriver.h"
+#include <Arduino.h>
 
-LityManager::LityManager()
-: waiter( debounceInterval )
-{
-}
+static int toId( const Point& point );
+const Field& getFieldAt( const Point& point, const Fields& fields );
 
 void LityManager::setup()
 {
-    pixelDriver.setup();
+    Serial.begin( 9600 );
+    PixelDriver::setup();
     IdleReader::setup();
 
     bool unfilled = true;
     do
     {
         // Initial reading and converting which is required for first time diff search
-        IdleReader::read( rawFieldsPrevious );
+        IdleReader::readUndebounced( rawFieldsPrevious );
 
         try
         {
             logic.populateFields( rawFieldsPrevious );
+            fields = logic.getFields();
             unfilled = false;
         }
         catch ( std::exception& exception )
@@ -42,16 +45,14 @@ void LityManager::run()
         return;
     }
 
-    // Debouncing
-    if ( !waiter.isReady( millis() ) )
-    {
-        return;
-    }
-
     try
     {
-        auto animations = logic.process( rawFieldsPrevious, rawFields );
-        doAnimations( animations );
+        const auto& animations = logic.process( rawFieldsPrevious, rawFields );
+        const auto& fieldsTarget = logic.getFields();
+
+        doAnimations( fieldsTarget, animations );
+
+        fields = fieldsTarget;
     }
     catch ( std::exception& exception )
     {
@@ -61,19 +62,38 @@ void LityManager::run()
     updatePreviousFields();
 }
 
-void LityManager::doAnimations( LityLogic::AnimationList& animationList )
+void LityManager::doAnimations( const Fields& fieldsTarget, const Figure::AnimationList& animationList )
 {
-    while ( animationList.size() )
+    std::vector< std::shared_ptr< Animation > > animations;
+
+    for ( const auto& animationPoint : animationList )
     {
-        for ( int i = 0; i < animationList.size(); i++ )
+        const auto& type = animationPoint.first;
+        const auto& point = animationPoint.second;
+        const auto& fieldCurrent = getFieldAt( point, fields );
+        const auto& fieldTarget = getFieldAt( point, fieldsTarget );
+
+        const auto& animation = AnimationFactory::Create( fieldCurrent, fieldTarget, point, type );
+
+        if ( !animation )
         {
-            auto& animation = animationList[ i ];
+            continue;
+        }
+
+        animations.push_back( std::move( animation ) );
+    }
+
+    while ( animations.size() )
+    {
+        for ( int i = 0; i < animations.size(); i++ )
+        {
+            auto& animation = animations[ i ];
 
             const bool updated = animation->update( millis() );
 
             if ( !updated )
             {
-                animationList.erase( animationList.begin() + i );
+                animations.erase( animations.begin() + i );
                 i--;
                 continue;
             }
@@ -81,16 +101,9 @@ void LityManager::doAnimations( LityLogic::AnimationList& animationList )
             const auto& color = animation->getColor();
             const auto& point = animation->getPoint();
 
-            displayColor( color, point );
+            PixelDriver::setColor( toId( point ), color );
         }
     }
-}
-
-void LityManager::displayColor( const RGB& color, const Point& point )
-{
-    const int pointId = toId( point );
-    const int stripId = Converter::toStripId( pointId );
-    pixelDriver.setColor( stripId, color );
 }
 
 void LityManager::updatePreviousFields()
@@ -98,7 +111,12 @@ void LityManager::updatePreviousFields()
     rawFieldsPrevious = rawFields;
 }
 
-int LityManager::toId( const Point& point ) const
+int toId( const Point& point )
 {
     return Converter::toId( point, sideSize );
+}
+
+const Field& getFieldAt( const Point& point, const Fields& fields )
+{
+    return fields[ point.y ][ point.x ];
 }

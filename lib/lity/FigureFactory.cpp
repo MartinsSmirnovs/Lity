@@ -4,7 +4,7 @@
 #include "Cross.h"
 #include "Dot.h"
 #include "FigureDescription.h"
-#include "Javelin.h"
+// #include "Javelin.h"
 #include "Square.h"
 
 

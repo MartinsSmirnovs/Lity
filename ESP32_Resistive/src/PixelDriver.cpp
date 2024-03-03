@@ -1,20 +1,23 @@
 #include "PixelDriver.h"
 #include "LityConfig.h"
+#include <FastLED.h>
 
-PixelDriver::PixelDriver()
-: strip( fieldsCount, GPIO_NUM_25, NEO_GRB + NEO_KHZ400 )
+namespace PixelDriver
 {
+
+static CRGB leds[ fieldsCount ];
+
+void setup()
+{
+    FastLED.addLeds< NEOPIXEL, GPIO_NUM_5 >( leds, fieldsCount );
+    FastLED.clear();
+    FastLED.show();
 }
 
-void PixelDriver::setup()
+void setColor( int pixel, const struct RGB& color )
 {
-    strip.begin();
-    strip.clear();
-    strip.show();
+    leds[ pixel ].setRGB( color.red, color.green, color.blue );
+    FastLED.show();
 }
 
-void PixelDriver::setColor( int pixel, const RGB& color )
-{
-    strip.setPixelColor( pixel, strip.Color( color.red, color.green, color.blue ) );
-    strip.show();
-}
+} // namespace PixelDriver
