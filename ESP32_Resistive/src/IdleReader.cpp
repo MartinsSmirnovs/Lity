@@ -7,9 +7,10 @@
 
 namespace IdleReader
 {
-// An arbitrary threshold which can be counted as a valid reading
 // 4095 is the max value that analogRead can return
-constexpr static int threshold = 4095 - 5;
+constexpr static int maxValue = 4095;
+// An arbitrary threshold which can be counted as a valid reading
+constexpr static int threshold = maxValue - 5;
 
 // Actual count of reading pins on the game board
 constexpr static int analogPins = 60;
@@ -39,6 +40,7 @@ static const std::vector< gpio_num_t > commonInPins = {
     GPIO_NUM_27, GPIO_NUM_14
 };
 
+// Each field is located between two pins
 static const std::array< std::pair< int, int >, fieldsCount > fieldDefinitions = {
     {
     { 4, 6 },   // 00
@@ -259,7 +261,7 @@ void rawDebouncedRead( RawReadings& readings )
             debounceEndTime = 0;
             stableReadingCount = 0;
             debounceCounter = {};
-            readings.fill( 4095 );
+            readings.fill( maxValue );
 
             // This will make sure that after the user takes off his figure, the whole
             // field will be read as "empty" and will allow to perform correct search
@@ -272,7 +274,7 @@ void rawDebouncedRead( RawReadings& readings )
 void read( FieldsRaw& fields )
 {
     RawReadings readings;
-    readings.fill( 4095 );
+    readings.fill( maxValue );
 
     rawDebouncedRead( readings );
 
@@ -282,7 +284,7 @@ void read( FieldsRaw& fields )
 void readUndebounced( FieldsRaw& fields )
 {
     RawReadings readings;
-    readings.fill( 4095 );
+    readings.fill( maxValue );
 
     rawRead( readings );
 
