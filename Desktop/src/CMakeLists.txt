@@ -1,7 +1,7 @@
 set(TARGET_NAME lity_desktop_src)
 
-file(GLOB HEADER_FILES ${CMAKE_SOURCE_DIR}/lib/lity/*.h lity/widgets/*.h lity/*.h)
-file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/lib/lity/*.cpp lity/widgets/*.cpp lity/*.cpp)
+file(GLOB HEADER_FILES lity/widgets/*.h lity/*.h)
+file(GLOB SOURCE_FILES lity/widgets/*.cpp lity/*.cpp)
 file(GLOB FORMS lity/widgets/*.ui)
 
 include(ExternLibs)
@@ -12,6 +12,8 @@ add_library(
     ${SOURCE_FILES}
     ${FORMS}
 )
+
+target_link_libraries(${TARGET_NAME} PRIVATE lib_lity)
 
 target_include_directories(${TARGET_NAME} PRIVATE
                            ${CMAKE_CURRENT_SOURCE_DIR}/lity/widgets

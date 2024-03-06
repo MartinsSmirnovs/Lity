@@ -52,7 +52,7 @@
                 "all",
                 "lity_desktop_app",
                 "lity_desktop_app_deploy",
-                "testing"
+                "lity_tests"
             ]
         },
         {
@@ -71,11 +71,8 @@
     ],
     "testPresets": [
         {
-            "name": "lity_esp32_resistive_x86_test",
-            "configurePreset": "Release",
-            "output": {
-                "verbosity": "verbose"
-            }
+            "name": "lity_tests",
+            "configurePreset": "Release"
         }
     ]
 }

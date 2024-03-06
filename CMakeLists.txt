@@ -12,6 +12,8 @@ project(${TARGET_NAME})
 
 include(CTest)
 
+add_subdirectory(lib/unity)
+add_subdirectory(lib/lity)
 add_subdirectory(Desktop/src)
 add_subdirectory(Desktop/apps)
-add_subdirectory(ESP32_Resistive)
+add_subdirectory(test)
