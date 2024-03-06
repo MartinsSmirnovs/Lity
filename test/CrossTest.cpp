@@ -9,7 +9,7 @@ void testCross_find()
         const Fields fields;
         const Field field( Field::red );
         const Point point( 3, 2 );
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         const auto result = figure.find( fields, fieldPoint );
@@ -22,7 +22,7 @@ void testCross_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 3, 2 ); // middle
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 4 ][ 2 ] = field; // bottom
@@ -39,7 +39,7 @@ void testCross_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 4, 2 ); // bottom
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 3 ][ 2 ] = field; // middle
@@ -56,7 +56,7 @@ void testCross_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 0, 2 ); // middle
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 1 ][ 2 ] = field; // bottom
@@ -73,7 +73,7 @@ void testCross_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 1, 4 ); // middle
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 0 ][ 4 ] = field; // top
@@ -90,7 +90,7 @@ void testCross_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 3, 2 ); // middle
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 4 ][ 2 ] = field; // bottom
@@ -109,7 +109,7 @@ void testCross_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 3, 2 ); // middle
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 4 ][ 2 ] = field; // bottom
@@ -131,7 +131,7 @@ void testCross_apply()
         Fields fields;
         const Field field( Field::red );
         const Point point( 3, 2 ); // middle
-        const Cross figure;
+        Cross figure;
         const auto fieldPoint = std::make_pair( field, point );
 
         fields[ 4 ][ 2 ] = field; // bottom
