@@ -1,16 +1,11 @@
 #pragma once
 
 #include "RGB.h"
-#include <Adafruit_NeoPixel.h>
 
-class PixelDriver
+namespace PixelDriver
 {
-public:
-    PixelDriver();
 
-    void setup();
-    void setColor( int pixel, const RGB& color );
-
-private:
-    Adafruit_NeoPixel strip;
-};
+void setup();
+void setColor( int pixel, const struct RGB& color );
+void show();
+} // namespace PixelDriver

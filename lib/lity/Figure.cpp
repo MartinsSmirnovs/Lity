@@ -45,6 +45,7 @@ bool Figure::checkColorMask( const Fields& fields, const FieldPoint& fieldPoint 
         // Match any enemy color
         if (maskValue == Field::Type::enemy &&
             fields[y][x].getType() != field.getType() &&
+            fields[y][x].getType() != Field::Type::none &&
             fields[y][x].getType() != Field::Type::black &&
             fields[y][x].getType() != Field::Type::white) {
             return true;

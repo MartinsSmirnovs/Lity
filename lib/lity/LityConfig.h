@@ -6,7 +6,7 @@
 #include <utility>
 
 #ifdef BUILD_ESP32
-constexpr int sideSize = 5;
+constexpr int sideSize = 10;
 #elif BUILD_TESTS
 constexpr int sideSize = 5;
 #else

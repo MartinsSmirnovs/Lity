@@ -6,7 +6,6 @@
 #include "LityConfig.h"
 #include "Point.h"
 #include <functional>
-#include <memory>
 #include <vector>
 
 class Figure

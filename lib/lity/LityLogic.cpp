@@ -1,5 +1,4 @@
 #include "LityLogic.h"
-#include "AnimationFactory.h"
 #include "Converter.h"
 #include "Differ.h"
 #include "FigureFactory.h"

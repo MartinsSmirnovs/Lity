@@ -2,7 +2,12 @@
 #include "Blink.h"
 #include "Fade.h"
 
-std::shared_ptr< Animation > AnimationFactory::Create( const Field& fieldCurrent, const Field& fieldTarget, const Point& point, Animation::Type type )
+namespace AnimationFactory
+{
+std::shared_ptr< Animation > Create( const Field& fieldCurrent,
+                                     const Field& fieldTarget,
+                                     const Point& point,
+                                     Animation::Type type )
 {
     switch ( type )
     {
@@ -20,5 +25,13 @@ std::shared_ptr< Animation > AnimationFactory::Create( const Field& fieldCurrent
                                               point );
         }
         break;
+
+        case Animation::none:
+        default:
+        {
+            return nullptr;
+        }
     }
 }
+
+} // namespace AnimationFactory
