@@ -2,6 +2,7 @@
 #include "LityConfig.h"
 #include "Waiter.h"
 #include <Arduino.h>
+#include <algorithm>
 #include <array>
 
 namespace IdleReader
@@ -13,6 +14,10 @@ constexpr static int threshold = 4095 - 5;
 // Actual count of reading pins on the game board
 constexpr static int analogPins = 60;
 using RawReadings = std::array< uint16_t, analogPins >;
+// Unconnected pins
+static const std::vector< int > unconnectedDemultiplexerPinsList = {
+    56, 57, 59, 61
+};
 
 // How many pins per each analog demultiplexer chip
 constexpr static int analogPinsPerChip = 8;
@@ -36,56 +41,60 @@ static const std::vector< gpio_num_t > commonInPins = {
 
 static const std::array< std::pair< int, int >, fieldsCount > fieldDefinitions = {
     {
-    { 0, 0 }, // 00
-    { 0, 0 }, // 01
-    { 0, 0 }, // 02
-    { 0, 0 }, // 03
-    { 0, 0 }, // 04
-    { 0, 0 }, // 05
-    { 0, 0 }, // 06
-    { 0, 0 }, // 07
-    { 0, 0 }, // 08
-    { 0, 0 }, // 09
-    { 0, 0 }, // 10
-    { 0, 0 }, // 11
-    { 0, 0 }, // 12
-    { 0, 0 }, // 13
-    { 0, 0 }, // 14
-    { 0, 0 }, // 15
-    { 0, 0 }, // 16
-    { 0, 0 }, // 17
-    { 0, 0 }, // 18
-    { 0, 0 }, // 19
-    { 0, 0 }, // 20
-    { 0, 0 }, // 21
-    { 0, 0 }, // 22
-    { 0, 0 }, // 23
-    { 0, 0 }, // 24
-    { 0, 0 }, // 25
-    { 0, 0 }, // 26
-    { 0, 0 }, // 27
-    { 0, 0 }, // 28
-    { 0, 0 }, // 29
-    { 0, 0 }, // 30
-    { 0, 0 }, // 31
-    { 0, 0 }, // 32
-    { 0, 0 }, // 33
-    { 0, 0 }, // 34
-    { 0, 0 }, // 35
-    { 0, 0 }, // 36
-    { 0, 0 }, // 37
-    { 0, 0 }, // 38
-    { 0, 0 }, // 39
-    { 0, 0 }, // 40
-    { 0, 0 }, // 41
-    { 0, 0 }, // 42
-    { 0, 0 }, // 43
-    { 0, 0 }, // 44
-    { 0, 0 }, // 45
-    { 0, 0 }, // 46
-    { 0, 0 }, // 47
-    { 0, 0 }, // 48
-    { 0, 0 }, // 49
+    { 4, 6 },   // 00
+    { 6, 2 },   // 01
+    { 7, 2 },   // 02
+    { 7, 3 },   // 03
+    { 5, 3 },   // 04
+    { 5, 36 },  // 05
+    { 38, 36 }, // 06
+    { 38, 35 }, // 07
+    { 39, 35 }, // 08
+    { 39, 37 }, // 09
+
+    { 4, 1 },   // 10
+    { 2, 1 },   // 11
+    { 2, 0 },   // 12
+    { 3, 0 },   // 13
+    { 3, 34 },  // 14
+    { 36, 34 }, // 15
+    { 36, 33 }, // 16
+    { 33, 35 }, // 17
+    { 32, 35 }, // 18
+    { 32, 37 }, // 19
+
+    { 1, 14 },  // 20
+    { 1, 15 },  // 21
+    { 0, 15 },  // 22
+    { 0, 13 },  // 23
+    { 34, 13 }, // 24
+    { 34, 46 }, // 25
+    { 33, 46 }, // 26
+    { 33, 47 }, // 27
+    { 32, 47 }, // 28
+    { 32, 45 }, // 29
+
+    { 14, 12 }, // 30
+    { 15, 12 }, // 31
+    { 15, 11 }, // 32
+    { 13, 11 }, // 33
+    { 13, 44 }, // 34
+    { 46, 44 }, // 35
+    { 46, 41 }, // 36
+    { 47, 41 }, // 37
+    { 47, 40 }, // 38
+    { 45, 40 }, // 39
+
+    { 12, 10 }, // 40
+    { 12, 9 },  // 41
+    { 11, 9 },  // 42
+    { 11, 8 },  // 43
+    { 44, 8 },  // 44
+    { 44, 42 }, // 45
+    { 41, 42 }, // 46
+    { 41, 55 }, // 47
+    { 40, 55 }, // 48
+    { 40, 43 }, // 49
 
     { 10, 22 }, // 50
     { 9, 22 },  // 51
@@ -117,8 +126,8 @@ static const std::array< std::pair< int, int >, fieldsCount > fieldDefinitions =
     { 52, 50 }, // 75
     { 52, 49 }, // 76
     { 51, 49 }, // 77
-    { 0, 0 },   // 78 ???????????????????????
-    { 0, 0 },   // 79 ???????????????????????
+    { 51, 57 }, // 78
+    { 0, 0 },   // 79
 
     { 28, 17 }, // 80
     { 30, 17 }, // 81
@@ -127,9 +136,9 @@ static const std::array< std::pair< int, int >, fieldsCount > fieldDefinitions =
     { 31, 50 }, // 84
     { 29, 50 }, // 85
     { 29, 49 }, // 86
-    { 0, 0 },   // 87 ???????????????????????
-    { 0, 0 },   // 88 ???????????????????????
-    { 0, 0 },   // 89 ???????????????????????
+    { 49, 58 }, // 87
+    { 57, 58 }, // 88
+    { 57, 59 }, // 89
 
     { 28, 26 }, // 90
     { 30, 26 }, // 91
@@ -138,9 +147,9 @@ static const std::array< std::pair< int, int >, fieldsCount > fieldDefinitions =
     { 31, 27 }, // 94
     { 29, 27 }, // 95
     { 29, 24 }, // 96
-    { 0, 0 },   // 97 ???????????????????????
-    { 0, 0 },   // 98 ???????????????????????
-    { 0, 0 },   // 99 ???????????????????????
+    { 58, 24 }, // 97
+    { 58, 56 }, // 98
+    { 59, 56 }, // 99
     }
 };
 
@@ -171,19 +180,23 @@ void rawRead( RawReadings& readings )
     {
         for ( uint8_t j = 0; j < analogPinsPerChip; j++ )
         {
+            const int currentPin = i * analogPinsPerChip + j;
+
+            // Continue if we are going to read from disabled pin
+            if ( std::find( unconnectedDemultiplexerPinsList.begin(),
+                            unconnectedDemultiplexerPinsList.end(),
+                            currentPin ) != unconnectedDemultiplexerPinsList.end() )
+            {
+                continue;
+            }
+
+            // Setup demultiplexer data select pins
             for ( const auto& pair : dataSelectPairs )
             {
                 digitalWrite( pair.first, j & pair.second );
             }
 
-            if ( counter < readings.size() )
-            {
-                readings[ counter ] = std::min( analogRead( commonInPins[ i ] ), readings[ counter ] );
-            }
-            else
-            {
-                return;
-            }
+            readings[ counter ] = std::min( analogRead( commonInPins[ i ] ), readings[ counter ] );
             counter++;
         }
     }
@@ -191,7 +204,7 @@ void rawRead( RawReadings& readings )
 
 void rawDebouncedRead( RawReadings& readings )
 {
-    constexpr static int maxCount = 10;
+    constexpr static int maxCount = 5;
 
     std::array< int, std::tuple_size< RawReadings >{} > debounceCounter = {};
 
