@@ -6,9 +6,12 @@ void testSquare_find()
 {
     // No square, because all fields are empty
     {
-        const Fields fields;
+        Fields fields;
         const Field field( Field::red );
         const Point point( 3, 2 );
+        fields[ 3 ][ 3 ] = field;
+        fields[ 3 ][ 3 ].upgrade();
+
         Square figure;
         const auto fieldPoint = std::make_pair( field, point );
 
@@ -47,6 +50,9 @@ void testSquare_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 1, 2 ); // top
+        fields[ 2 ][ 2 ] = field;
+        fields[ 2 ][ 2 ].upgrade();
+
         Square figure;
         const auto fieldPoint = std::make_pair( field, point );
 
@@ -69,6 +75,9 @@ void testSquare_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 4, 2 ); // middle
+        fields[ 4 ][ 2 ] = field;
+        fields[ 4 ][ 2 ].upgrade();
+
         Square figure;
         const auto fieldPoint = std::make_pair( field, point );
 
@@ -87,6 +96,9 @@ void testSquare_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 2, 0 ); // middle
+        fields[ 2 ][ 0 ] = field;
+        fields[ 2 ][ 0 ].upgrade();
+
         Square figure;
         const auto fieldPoint = std::make_pair( field, point );
 
@@ -105,6 +117,9 @@ void testSquare_find()
         Fields fields;
         const Field field( Field::red );
         const Point point( 2, 2 ); // middle
+        fields[ 2 ][ 2 ] = field;
+        fields[ 2 ][ 2 ].upgrade();
+
         Square figure;
         const auto fieldPoint = std::make_pair( field, point );
 
