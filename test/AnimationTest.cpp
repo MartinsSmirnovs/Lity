@@ -4,7 +4,7 @@
 
 void testFade_Update()
 {
-    static_assert( Animation::appearance == 250 );
+    static_assert( Animation::appearance == 1000 );
 
     // Fade goes down
     const RGB red( 255, 0, 0 );
@@ -26,7 +26,7 @@ void testFade_Update()
     {
         const auto& color = fade.getColor();
 
-        TEST_ASSERT_EQUAL_INT( 24, color.red );
+        TEST_ASSERT_EQUAL_INT( 230, color.red );
         TEST_ASSERT_EQUAL_INT( 0, color.green );
         TEST_ASSERT_EQUAL_INT( 0, color.blue );
     }
