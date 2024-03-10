@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Figure.h"
+#include "Rotatable.h"
 
-class Javelin : public Figure
+class Javelin : public Rotatable
 {
 public:
     Javelin();

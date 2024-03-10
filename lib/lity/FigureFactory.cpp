@@ -4,7 +4,7 @@
 #include "Cross.h"
 #include "Dot.h"
 #include "FigureDescription.h"
-// #include "Javelin.h"
+#include "Javelin.h"
 #include "Square.h"
 
 
@@ -30,15 +30,17 @@ std::shared_ptr< Figure > FigureFactory::yield()
             return std::make_shared< Cross >();
         }
         break;
-        // case X: {
-        //     return std::make_shared<Javelin>();
-        // } break;
         case 4:
+        {
+            return std::make_shared< Javelin >();
+        }
+        break;
+        case 5:
         {
             return std::make_shared< Arrowhead >();
         }
         break;
-        case 5:
+        case 6:
         {
             return std::make_shared< Dot >();
         }

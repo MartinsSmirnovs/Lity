@@ -90,6 +90,11 @@ void FigureDescription::flip( TwoDimensionalVector& mask, Point& point, Axis axi
 
             std::swap( mask[ i ][ j ], mask[ mirrorPosition.y ][ mirrorPosition.x ] );
 
+            // TODO
+            // There should be a separate function which deals with flipping of center point.
+            // Currently, because this flip method gets called multiple times, the center
+            // gets flipped multiple times too, leading to unpredictable resulting value of
+            // center point.
             const auto currentPosition = Point( i, j );
             if ( point == currentPosition )
             {
