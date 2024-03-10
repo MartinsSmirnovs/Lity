@@ -40,5 +40,8 @@ Javelin::Javelin()
         { 0, 0, 0, 0 }
     };
 
+    // Currently Javelin works by pure chance. When descriptions get flipped in FigureDescription,
+    // the description.center gets flipped too, and it happens multiple times instead of
+    // only one.
     description.center = { 1, 2 };
 }
